@@ -1,0 +1,1800 @@
+{
+  "generated_at": "2026-03-21T01:17:28.4879594Z",
+  "source": "corpus",
+  "corpus_inputs": [
+    "C:\\Users\\wimer\\Desktop\\Sentry\\netwise\\agent\\experiment-deepened-full-sweep-scoped-v2.json"
+  ],
+  "device_count": 10,
+  "observation_status_counts": {
+    "no_response": 430,
+    "not_applicable": 76,
+    "real_data": 438,
+    "unsupported": 57
+  },
+  "feature_vectors": [
+    {
+      "device_key": "8c:e7:48:43:e3:1e",
+      "device_id": "8c:e7:48:43:e3:1e",
+      "ip": "192.168.4.20",
+      "mac": "8c:e7:48:43:e3:1e",
+      "hostname": "SWANN 192.168.4.20",
+      "resolved_label": "camera",
+      "confidence": 0.9500000000000002,
+      "calibrated_confidence": 0.9300000000000002,
+      "confidence_band": "auto_label",
+      "candidate_labels": [
+        {
+          "label": "camera",
+          "score": 2.1,
+          "confidence": 0.9500000000000002,
+          "evidence": [
+            "SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+            "vendor/hostname: camera-like",
+            "port:554",
+            "port:554"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1,
+            "weak": 2
+          }
+        },
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 113,
+      "observation_status_counts": {
+        "no_response": 47,
+        "not_applicable": 6,
+        "real_data": 56,
+        "unsupported": 4
+      },
+      "real_data_observation_count": 56,
+      "sources_seen": [
+        "arp",
+        "ssdp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 3,
+        "correlation": 12,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 6,
+        "security_ops": 5,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 3,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "camera_probe": 2,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "directory_service_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "icmp_reachability": 2,
+        "lldp_neighbors": 1,
+        "llmnr_responder_analysis": 2,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "media_device_probe": 3,
+        "netbios_llmnr_passive": 3,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 5,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tcp_connect_microset": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "camera_probe|camera_rtsp_realm": 1,
+        "camera_probe|camera_rtsp_status": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "directory_service_correlation|directory_hint": 1,
+        "directory_service_correlation|domain": 1,
+        "directory_service_correlation|fqdn_depth": 1,
+        "directory_service_correlation|hostname_labels": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "icmp_reachability|icmp_echo": 1,
+        "icmp_reachability|icmp_like": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "llmnr_responder_analysis|llmnr_query_name": 1,
+        "llmnr_responder_analysis|llmnr_responder_count": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "media_device_probe|ports": 1,
+        "media_device_probe|rtsp_realm": 1,
+        "media_device_probe|rtsp_status": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|service_family": 1,
+        "port_service_correlation|tcp_ports": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tcp_connect_microset|ports": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 18,
+        "recent_1h": 38
+      },
+      "hit_frequency": 0.0338695200930928,
+      "stale_signal_score": 0.994271508714872
+    },
+    {
+      "device_key": "c8:c6:fe:07:fe:92",
+      "device_id": "c8:c6:fe:07:fe:92",
+      "ip": "192.168.4.1",
+      "mac": "c8:c6:fe:07:fe:92",
+      "hostname": "eero",
+      "resolved_label": "router",
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429,
+      "confidence_band": "confirm",
+      "candidate_labels": [
+        {
+          "label": "router",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP: urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP server header: eeroOS/latest UPnP/1.0 eero/latest",
+            "vendor/hostname: mesh-router-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        },
+        {
+          "label": "tv",
+          "score": 0.5,
+          "confidence": 0.17857142857142858,
+          "evidence": [
+            "port:1900",
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 2
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 100,
+      "observation_status_counts": {
+        "no_response": 42,
+        "not_applicable": 6,
+        "real_data": 47,
+        "unsupported": 5
+      },
+      "real_data_observation_count": 47,
+      "sources_seen": [
+        "arp",
+        "ssdp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 4,
+        "correlation": 9,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 4,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 3,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "directory_service_correlation": 1,
+        "evidence_graph_merger": 1,
+        "firewall_traffic_profile": 1,
+        "host_event_log_pull": 2,
+        "icmp_reachability": 2,
+        "lldp_neighbors": 1,
+        "llmnr_responder_analysis": 2,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tcp_connect_microset": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "directory_service_correlation|hostname_labels": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "firewall_traffic_profile|dns_version_bind": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "icmp_reachability|icmp_echo": 1,
+        "icmp_reachability|icmp_like": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "llmnr_responder_analysis|llmnr_query_name": 1,
+        "llmnr_responder_analysis|llmnr_responder_count": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tcp_connect_microset|ports": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 14,
+        "recent_1h": 33
+      },
+      "hit_frequency": 0.02842620436384574,
+      "stale_signal_score": 0.9936932882041059
+    },
+    {
+      "device_key": "74:e2:0c:14:32:51",
+      "device_id": "74:e2:0c:14:32:51",
+      "ip": "192.168.4.196",
+      "mac": "74:e2:0c:14:32:51",
+      "resolved_label": "tv",
+      "confidence": 0.6571428571428573,
+      "calibrated_confidence": 0.640952380952381,
+      "confidence_band": "confirm",
+      "conflict_flags": [
+        "weak_signal"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 1.7,
+          "confidence": 0.6571428571428573,
+          "evidence": [
+            "port:8009",
+            "port:1900"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.1,
+          "confidence": 0.03571428571428572,
+          "evidence": [
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 41,
+        "not_applicable": 8,
+        "real_data": 41,
+        "unsupported": 7
+      },
+      "real_data_observation_count": 41,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 1,
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "security_ops": 1,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "media_device_probe": 1,
+        "netbios_llmnr_passive": 3,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "media_device_probe|ports": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 12,
+        "recent_1h": 29
+      },
+      "hit_frequency": 0.024797327211014367,
+      "stale_signal_score": 0.9934428237938902
+    },
+    {
+      "device_key": "ae:71:8a:0b:80:59",
+      "device_id": "ae:71:8a:0b:80:59",
+      "ip": "192.168.4.21",
+      "mac": "ae:71:8a:0b:80:59",
+      "resolved_label": "tv",
+      "confidence": 1,
+      "calibrated_confidence": 0.97,
+      "confidence_band": "confirm",
+      "conflict_flags": [
+        "weak_signal"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 2.7,
+          "confidence": 1,
+          "evidence": [
+            "port:7000",
+            "media:airtunes/940.21.1",
+            "port:1900"
+          ],
+          "support_tiers": {
+            "medium": 2,
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 109,
+      "observation_status_counts": {
+        "no_response": 46,
+        "not_applicable": 8,
+        "real_data": 50,
+        "unsupported": 5
+      },
+      "real_data_observation_count": 50,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 3,
+        "correlation": 8,
+        "identity": 18,
+        "mdns": 1,
+        "ports": 3,
+        "security_ops": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "icmp_reachability": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "media_device_probe": 3,
+        "netbios_llmnr_passive": 8,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "icmp_reachability|icmp_echo": 1,
+        "icmp_reachability|icmp_like": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "media_device_probe|airplay_server": 1,
+        "media_device_probe|airplay_status": 1,
+        "media_device_probe|ports": 1,
+        "netbios_llmnr_passive|netbios_mac": 1,
+        "netbios_llmnr_passive|netbios_name": 1,
+        "netbios_llmnr_passive|netbios_record_type": 1,
+        "netbios_llmnr_passive|netbios_role": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 1,
+        "netbios_llmnr_passive|netbios_status_detail": 1,
+        "netbios_llmnr_passive|netbios_suffix": 1,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 12,
+        "recent_1h": 38
+      },
+      "hit_frequency": 0.030240642940261426,
+      "stale_signal_score": 0.9931502035084688
+    },
+    {
+      "device_key": "2a:fe:31:f6:99:53",
+      "device_id": "2a:fe:31:f6:99:53",
+      "ip": "192.168.4.155",
+      "mac": "2a:fe:31:f6:99:53",
+      "resolved_label": "unknown",
+      "confidence": 0.08928571428571429,
+      "calibrated_confidence": 0.03678571428571428,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "weak_signal",
+        "low_confidence"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.1,
+          "confidence": 0.03571428571428572,
+          "evidence": [
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 42,
+        "not_applicable": 8,
+        "real_data": 40,
+        "unsupported": 7
+      },
+      "real_data_observation_count": 40,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 1,
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 12,
+        "recent_1h": 28
+      },
+      "hit_frequency": 0.02419251435220914,
+      "stale_signal_score": 0.9934312276865889
+    },
+    {
+      "device_key": "2c:9e:00:95:33:bb",
+      "device_id": "2c:9e:00:95:33:bb",
+      "ip": "192.168.4.239",
+      "mac": "2c:9e:00:95:33:bb",
+      "resolved_label": "unknown",
+      "confidence": 0.08928571428571429,
+      "calibrated_confidence": 0.03678571428571428,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "weak_signal",
+        "low_confidence"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.1,
+          "confidence": 0.03571428571428572,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable"
+          ],
+          "support_tiers": {
+            "contextual": 2
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 43,
+        "not_applicable": 8,
+        "real_data": 41,
+        "unsupported": 5
+      },
+      "real_data_observation_count": 41,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 2,
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "icmp_reachability": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "icmp_reachability|icmp_echo": 1,
+        "icmp_reachability|icmp_like": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 11,
+        "recent_1h": 30
+      },
+      "hit_frequency": 0.024797327211014367,
+      "stale_signal_score": 0.9931789891663191
+    },
+    {
+      "device_key": "2e:89:cb:b3:d2:e3",
+      "device_id": "2e:89:cb:b3:d2:e3",
+      "ip": "192.168.4.23",
+      "mac": "2e:89:cb:b3:d2:e3",
+      "resolved_label": "unknown",
+      "confidence": 0.08928571428571429,
+      "calibrated_confidence": 0.03678571428571428,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "weak_signal",
+        "low_confidence"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 43,
+        "not_applicable": 8,
+        "real_data": 39,
+        "unsupported": 7
+      },
+      "real_data_observation_count": 39,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 11,
+        "recent_1h": 28
+      },
+      "hit_frequency": 0.02358770149340391,
+      "stale_signal_score": 0.9932524919598563
+    },
+    {
+      "device_key": "6e:cc:11:51:a4:e0",
+      "device_id": "6e:cc:11:51:a4:e0",
+      "ip": "192.168.4.222",
+      "mac": "6e:cc:11:51:a4:e0",
+      "resolved_label": "unknown",
+      "confidence": 0.08928571428571429,
+      "calibrated_confidence": 0.03678571428571428,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "weak_signal",
+        "low_confidence"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 43,
+        "not_applicable": 8,
+        "real_data": 39,
+        "unsupported": 7
+      },
+      "real_data_observation_count": 39,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 11,
+        "recent_1h": 28
+      },
+      "hit_frequency": 0.02358770149340391,
+      "stale_signal_score": 0.9932935191047972
+    },
+    {
+      "device_key": "b4:20:46:58:21:2d",
+      "device_id": "b4:20:46:58:21:2d",
+      "ip": "192.168.4.27",
+      "mac": "b4:20:46:58:21:2d",
+      "resolved_label": "unknown",
+      "confidence": 0.08928571428571429,
+      "calibrated_confidence": 0.03678571428571428,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "weak_signal",
+        "candidate_competition",
+        "low_confidence"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 41,
+        "not_applicable": 8,
+        "real_data": 43,
+        "unsupported": 5
+      },
+      "real_data_observation_count": 43,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 4,
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "firewall_traffic_profile": 1,
+        "host_event_log_pull": 2,
+        "icmp_reachability": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "firewall_traffic_profile|dns_version_bind": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "icmp_reachability|icmp_echo": 1,
+        "icmp_reachability|icmp_like": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 13,
+        "recent_1h": 30
+      },
+      "hit_frequency": 0.026006952928624826,
+      "stale_signal_score": 0.9933998303900403
+    },
+    {
+      "device_key": "ec:c9:ff:05:fc:44",
+      "device_id": "ec:c9:ff:05:fc:44",
+      "ip": "192.168.4.189",
+      "mac": "ec:c9:ff:05:fc:44",
+      "resolved_label": "unknown",
+      "confidence": 0.08928571428571429,
+      "calibrated_confidence": 0.03678571428571428,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "weak_signal",
+        "candidate_competition",
+        "low_confidence"
+      ],
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "observation_count": 97,
+      "observation_status_counts": {
+        "no_response": 42,
+        "not_applicable": 8,
+        "real_data": 42,
+        "unsupported": 5
+      },
+      "real_data_observation_count": 42,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "behavior": 3,
+        "correlation": 8,
+        "identity": 13,
+        "mdns": 1,
+        "ports": 3,
+        "service_fingerprint": 6,
+        "snmp": 1,
+        "ssdp": 1,
+        "topology": 2,
+        "unknown": 1,
+        "wifi": 3
+      },
+      "strategy_counts": {
+        "arp_active_refresh": 5,
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "cross_scan_time_correlation": 4,
+        "evidence_graph_merger": 1,
+        "host_event_log_pull": 2,
+        "icmp_reachability": 2,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "manual_operator_label_fallback": 1,
+        "mdns_active": 1,
+        "netbios_llmnr_passive": 3,
+        "packet_ttl_os_fingerprint": 1,
+        "passive_http_metadata": 1,
+        "passive_service_fingerprint_pcap": 1,
+        "passive_ssh_banner": 1,
+        "passive_tls_handshake": 1,
+        "port_service_correlation": 3,
+        "radius_8021x_identity": 1,
+        "ssdp_active": 1,
+        "tls_cert_probe": 3,
+        "wireless_11_beacon": 3
+      },
+      "signal_counts": {
+        "arp_active_refresh|neighbor_age": 1,
+        "arp_active_refresh|neighbor_interface": 1,
+        "arp_active_refresh|neighbor_mac": 1,
+        "arp_active_refresh|neighbor_refresh": 1,
+        "arp_active_refresh|neighbor_type": 1,
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "cross_scan_time_correlation|first_seen": 1,
+        "cross_scan_time_correlation|last_seen": 1,
+        "cross_scan_time_correlation|recurrence": 1,
+        "cross_scan_time_correlation|seen_count": 1,
+        "evidence_graph_merger|evidence_graph": 1,
+        "host_event_log_pull|host_event": 1,
+        "host_event_log_pull|host_event_source": 1,
+        "icmp_reachability|icmp_echo": 1,
+        "icmp_reachability|icmp_like": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "manual_operator_label_fallback|manual_label": 1,
+        "mdns_active|mdns_observation_mode": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2,
+        "packet_ttl_os_fingerprint|ttl": 1,
+        "passive_http_metadata|passive_capture_unavailable": 1,
+        "passive_service_fingerprint_pcap|passive_capture_unavailable": 1,
+        "passive_ssh_banner|passive_capture_unavailable": 1,
+        "passive_tls_handshake|passive_capture_unavailable": 1,
+        "port_service_correlation|udp_candidate_port": 3,
+        "radius_8021x_identity|eap_identity_hint": 1,
+        "ssdp_active|ssdp_observation_mode": 1,
+        "tls_cert_probe|tls_port": 3,
+        "wireless_11_beacon|wireless_record_count": 1,
+        "wireless_11_beacon|wireless_source": 1,
+        "wireless_11_beacon|wireless_status": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 12,
+        "recent_1h": 30
+      },
+      "hit_frequency": 0.025402140069819598,
+      "stale_signal_score": 0.9933127119304229
+    }
+  ],
+  "active_learning": [
+    {
+      "device_key": "b4:20:46:58:21:2d",
+      "device_id": "b4:20:46:58:21:2d",
+      "resolved_label": "unknown",
+      "entropy": 0.9910760598382222,
+      "conflict_count": 3,
+      "expected_gain": 2.1410760598382224,
+      "unknown": true,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "level=low",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "ec:c9:ff:05:fc:44",
+      "device_id": "ec:c9:ff:05:fc:44",
+      "resolved_label": "unknown",
+      "entropy": 0.9910760598382222,
+      "conflict_count": 3,
+      "expected_gain": 2.1410760598382224,
+      "unknown": true,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "level=low",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "2a:fe:31:f6:99:53",
+      "device_id": "2a:fe:31:f6:99:53",
+      "resolved_label": "unknown",
+      "entropy": 0.863120568566631,
+      "conflict_count": 2,
+      "expected_gain": 1.813120568566631,
+      "unknown": true,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.1,
+          "confidence": 0.03571428571428572,
+          "evidence": [
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "level=low",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "2c:9e:00:95:33:bb",
+      "device_id": "2c:9e:00:95:33:bb",
+      "resolved_label": "unknown",
+      "entropy": 0.863120568566631,
+      "conflict_count": 2,
+      "expected_gain": 1.813120568566631,
+      "unknown": true,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.1,
+          "confidence": 0.03571428571428572,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable"
+          ],
+          "support_tiers": {
+            "contextual": 2
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "level=low",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "c8:c6:fe:07:fe:92",
+      "device_id": "c8:c6:fe:07:fe:92",
+      "resolved_label": "router",
+      "entropy": 1.1602049910479568,
+      "conflict_count": 0,
+      "expected_gain": 1.4102049910479568,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "router",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP: urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP server header: eeroOS/latest UPnP/1.0 eero/latest",
+            "vendor/hostname: mesh-router-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        },
+        {
+          "label": "tv",
+          "score": 0.5,
+          "confidence": 0.17857142857142858,
+          "evidence": [
+            "port:1900",
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 2
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: router",
+        "level=mid",
+        "router: SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+        "router: SSDP: urn:schemas-upnp-org:device:wandevice:1",
+        "router: SSDP server header: eeroOS/latest UPnP/1.0 eero/latest"
+      ]
+    },
+    {
+      "device_key": "2e:89:cb:b3:d2:e3",
+      "device_id": "2e:89:cb:b3:d2:e3",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "level=low",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "6e:cc:11:51:a4:e0",
+      "device_id": "6e:cc:11:51:a4:e0",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "level=low",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "ae:71:8a:0b:80:59",
+      "device_id": "ae:71:8a:0b:80:59",
+      "resolved_label": "tv",
+      "entropy": 0.35335933502142136,
+      "conflict_count": 1,
+      "expected_gain": 0.8033593350214214,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 2.7,
+          "confidence": 1,
+          "evidence": [
+            "port:7000",
+            "media:airtunes/940.21.1",
+            "port:1900"
+          ],
+          "support_tiers": {
+            "medium": 2,
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "conflicts_detected: weak_signal",
+        "level=prime",
+        "tv: port:7000",
+        "tv: media:airtunes/940.21.1",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "74:e2:0c:14:32:51",
+      "device_id": "74:e2:0c:14:32:51",
+      "resolved_label": "tv",
+      "entropy": 0.29292995113885956,
+      "conflict_count": 1,
+      "expected_gain": 0.7429299511388596,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "tv",
+          "score": 1.7,
+          "confidence": 0.6571428571428573,
+          "evidence": [
+            "port:8009",
+            "port:1900"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.1,
+          "confidence": 0.03571428571428572,
+          "evidence": [
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: tv",
+        "conflicts_detected: weak_signal",
+        "level=mid",
+        "tv: port:8009",
+        "tv: port:1900"
+      ]
+    },
+    {
+      "device_key": "8c:e7:48:43:e3:1e",
+      "device_id": "8c:e7:48:43:e3:1e",
+      "resolved_label": "camera",
+      "entropy": 0.7398058360938442,
+      "conflict_count": 0,
+      "expected_gain": 0.7398058360938442,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "camera",
+          "score": 2.1,
+          "confidence": 0.9500000000000002,
+          "evidence": [
+            "SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+            "vendor/hostname: camera-like",
+            "port:554",
+            "port:554"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1,
+            "weak": 2
+          }
+        },
+        {
+          "label": "tv",
+          "score": 0.25,
+          "confidence": 0.08928571428571429,
+          "evidence": [
+            "port:1900"
+          ],
+          "support_tiers": {
+            "weak": 1
+          }
+        },
+        {
+          "label": "iot",
+          "score": 0.2,
+          "confidence": 0.07142857142857144,
+          "evidence": [
+            "icmp_like:reachable",
+            "icmp_like:reachable",
+            "ttl:64"
+          ],
+          "support_tiers": {
+            "contextual": 2,
+            "weak": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: camera",
+        "level=prime",
+        "camera: SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+        "camera: vendor/hostname: camera-like",
+        "camera: port:554"
+      ]
+    }
+  ]
+}

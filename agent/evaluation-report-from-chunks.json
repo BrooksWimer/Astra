@@ -1,0 +1,1208 @@
+{
+  "name": "experiment-chunks-eval",
+  "source": "corpus",
+  "generated_at": "2026-03-19T21:03:26.4331556Z",
+  "sample_count": 19,
+  "devices": [
+    {
+      "id": "c8:c6:fe:07:fe:92",
+      "ip": "192.168.4.1",
+      "mac": "c8:c6:fe:07:fe:92",
+      "device_type": "router",
+      "label_state": {
+        "device_category": "router",
+        "label_confidence": 0.9785714285714286,
+        "label_confidence_calibrated": 0.9528571428571428,
+        "evidence_summary": [
+          "ssdp_rootdevice_gateway_ip:192.168.4.1"
+        ],
+        "candidate_labels": [
+          {
+            "label": "router",
+            "score": 1.9,
+            "confidence": 0.9785714285714286,
+            "evidence": [
+              "ssdp_rootdevice_gateway_ip:192.168.4.1",
+              "ssdp_rootdevice_gateway_ip:192.168.4.1"
+            ],
+            "support_tiers": {
+              "strong": 2
+            }
+          },
+          {
+            "label": "tv",
+            "score": 0.5,
+            "confidence": 0.17857142857142858,
+            "evidence": [
+              "port:1900",
+              "port:1900"
+            ],
+            "support_tiers": {
+              "weak": 2
+            }
+          },
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: router",
+          "level=prime",
+          "router: ssdp_rootdevice_gateway_ip:192.168.4.1",
+          "router: ssdp_rootdevice_gateway_ip:192.168.4.1"
+        ],
+        "confidence_band": "auto_action"
+      },
+      "observation_count": 36,
+      "source_count": 26,
+      "confidence": 0.9785714285714286,
+      "calibrated_confidence": 0.9528571428571428
+    },
+    {
+      "id": "8c:e7:48:43:e3:1e",
+      "ip": "192.168.4.20",
+      "mac": "8c:e7:48:43:e3:1e",
+      "device_type": "camera",
+      "label_state": {
+        "device_category": "camera",
+        "label_confidence": 0.6392857142857145,
+        "label_confidence_calibrated": 0.6219047619047621,
+        "evidence_summary": [
+          "port:554"
+        ],
+        "candidate_labels": [
+          {
+            "label": "camera",
+            "score": 1.6500000000000001,
+            "confidence": 0.6392857142857145,
+            "evidence": [
+              "port:554",
+              "port:554",
+              "port:554"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "weak": 2
+            }
+          },
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: camera",
+          "conflicts_detected: weak_signal",
+          "level=mid",
+          "camera: port:554",
+          "camera: port:554",
+          "camera: port:554"
+        ],
+        "conflict_flags": [
+          "weak_signal"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 36,
+      "source_count": 26,
+      "confidence": 0.6392857142857145,
+      "calibrated_confidence": 0.6219047619047621,
+      "conflict": true
+    },
+    {
+      "id": "9c:67:d6:70:2e:2a",
+      "ip": "192.168.4.225",
+      "mac": "9c:67:d6:70:2e:2a",
+      "hostname": "BWIMER-T14",
+      "device_type": "laptop",
+      "label_state": {
+        "device_category": "laptop",
+        "label_confidence": 0.5571428571428572,
+        "label_confidence_calibrated": 0.5228571428571429,
+        "evidence_summary": [
+          "vendor/hostname: workstation-like"
+        ],
+        "candidate_labels": [
+          {
+            "label": "laptop",
+            "score": 1,
+            "confidence": 0.5571428571428572,
+            "evidence": [
+              "vendor/hostname: workstation-like"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "strong": 1
+            }
+          },
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: laptop",
+          "level=mid",
+          "laptop: vendor/hostname: workstation-like"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 37,
+      "source_count": 28,
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429
+    },
+    {
+      "id": "2a:fe:31:f6:99:53",
+      "ip": "192.168.4.155",
+      "mac": "2a:fe:31:f6:99:53",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "ec:c9:ff:05:fc:44",
+      "ip": "192.168.4.189",
+      "mac": "ec:c9:ff:05:fc:44",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "ae:bb:46:b1:96:b9",
+      "ip": "192.168.4.191",
+      "mac": "ae:bb:46:b1:96:b9",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "96:d2:d1:2c:02:35",
+      "ip": "192.168.4.195",
+      "mac": "96:d2:d1:2c:02:35",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 32,
+      "source_count": 22,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "74:e2:0c:14:32:51",
+      "ip": "192.168.4.196",
+      "mac": "74:e2:0c:14:32:51",
+      "hostname": "236489dcbc82f752.local",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "ae:71:8a:0b:80:59",
+      "ip": "192.168.4.21",
+      "mac": "ae:71:8a:0b:80:59",
+      "hostname": "MacBook-Pro-167.local",
+      "device_type": "laptop",
+      "label_state": {
+        "device_category": "laptop",
+        "label_confidence": 0.5571428571428572,
+        "label_confidence_calibrated": 0.5228571428571429,
+        "evidence_summary": [
+          "vendor/hostname: laptop-like",
+          "vendor/hostname: workstation-like"
+        ],
+        "candidate_labels": [
+          {
+            "label": "laptop",
+            "score": 1,
+            "confidence": 0.5571428571428572,
+            "evidence": [
+              "vendor/hostname: laptop-like",
+              "vendor/hostname: workstation-like"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "strong": 1
+            }
+          },
+          {
+            "label": "tv",
+            "score": 0.25,
+            "confidence": 0.1392857142857143,
+            "evidence": [
+              "port:7000"
+            ],
+            "support_tiers": {
+              "medium": 1
+            }
+          },
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: laptop",
+          "level=mid",
+          "laptop: vendor/hostname: laptop-like",
+          "laptop: vendor/hostname: workstation-like"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 39,
+      "source_count": 28,
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429
+    },
+    {
+      "id": "b4:20:46:6e:02:0d",
+      "ip": "192.168.4.210",
+      "mac": "b4:20:46:6e:02:0d",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "ae:8c:e3:5a:dc:56",
+      "ip": "192.168.4.221",
+      "mac": "ae:8c:e3:5a:dc:56",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "6e:cc:11:51:a4:e0",
+      "ip": "192.168.4.222",
+      "mac": "6e:cc:11:51:a4:e0",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "2e:89:cb:b3:d2:e3",
+      "ip": "192.168.4.23",
+      "mac": "2e:89:cb:b3:d2:e3",
+      "hostname": "AW118",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.10714285714285715,
+        "label_confidence_calibrated": 0.04428571428571429,
+        "evidence_summary": [
+          "ssh:ssh-2.0-openssh_9.9"
+        ],
+        "candidate_labels": [
+          {
+            "label": "laptop",
+            "score": 0.3,
+            "confidence": 0.10714285714285715,
+            "evidence": [
+              "ssh:ssh-2.0-openssh_9.9"
+            ],
+            "support_tiers": {
+              "weak": 1
+            }
+          },
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:reachable"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: laptop",
+          "level=low",
+          "laptop: ssh:ssh-2.0-openssh_9.9"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.10714285714285715,
+      "calibrated_confidence": 0.04428571428571429,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "2c:9e:00:95:33:bb",
+      "ip": "192.168.4.239",
+      "mac": "2c:9e:00:95:33:bb",
+      "hostname": "PS5-902BA7.local",
+      "device_type": "tv",
+      "label_state": {
+        "device_category": "tv",
+        "label_confidence": 0.5571428571428572,
+        "label_confidence_calibrated": 0.5228571428571429,
+        "evidence_summary": [
+          "vendor/hostname: console-like media device"
+        ],
+        "candidate_labels": [
+          {
+            "label": "tv",
+            "score": 1,
+            "confidence": 0.5571428571428572,
+            "evidence": [
+              "vendor/hostname: console-like media device"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "strong": 1
+            }
+          },
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: tv",
+          "level=mid",
+          "tv: vendor/hostname: console-like media device"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429
+    },
+    {
+      "id": "46:92:be:fb:66:91",
+      "ip": "192.168.4.250",
+      "mac": "46:92:be:fb:66:91",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "b4:20:46:58:21:2d",
+      "ip": "192.168.4.27",
+      "mac": "b4:20:46:58:21:2d",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 38,
+      "source_count": 28,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "ip_192.168.4.253",
+      "ip": "192.168.4.253",
+      "mac": "",
+      "hostname": "Brooks.local",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 27,
+      "source_count": 21,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "34:13:43:61:b6:cf",
+      "ip": "192.168.4.193",
+      "mac": "34:13:43:61:b6:cf",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "source_count": 26,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "98:77:d5:3f:b7:60",
+      "ip": "192.168.4.233",
+      "mac": "98:77:d5:3f:b7:60",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0.02,
+        "label_confidence_calibrated": 0.016,
+        "evidence_summary": [
+          "icmp_like:no_tcp_probe"
+        ],
+        "candidate_labels": [
+          {
+            "label": "iot",
+            "score": 0.05,
+            "confidence": 0.02,
+            "evidence": [
+              "icmp_like:no_tcp_probe"
+            ],
+            "support_tiers": {
+              "contextual": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: iot",
+          "level=low",
+          "iot: icmp_like:no_tcp_probe"
+        ],
+        "conflict_flags": [
+          "weak_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 28,
+      "source_count": 20,
+      "confidence": 0.02,
+      "calibrated_confidence": 0.016,
+      "conflict": true,
+      "unknown": true
+    }
+  ],
+  "label_summary": {
+    "device_count": 19,
+    "labeled_count": 5,
+    "unknown_count": 14,
+    "conflict_count": 15,
+    "band_counts": {
+      "auto_action": 1,
+      "confirm": 4,
+      "unknown": 14
+    },
+    "top_labels": [
+      {
+        "label": "unknown",
+        "count": 14
+      },
+      {
+        "label": "laptop",
+        "count": 2
+      },
+      {
+        "label": "camera",
+        "count": 1
+      },
+      {
+        "label": "router",
+        "count": 1
+      },
+      {
+        "label": "tv",
+        "count": 1
+      }
+    ],
+    "top_candidate_labels": [
+      {
+        "label": "iot",
+        "count": 18
+      },
+      {
+        "label": "laptop",
+        "count": 3
+      },
+      {
+        "label": "tv",
+        "count": 3
+      },
+      {
+        "label": "camera",
+        "count": 1
+      },
+      {
+        "label": "router",
+        "count": 1
+      }
+    ],
+    "average_confidence": 0.19139097744360903,
+    "average_calibrated_confidence": 0.17787468671679205
+  },
+  "evidence_graph": {
+    "built_at": "2026-03-19T21:03:26Z",
+    "device_count": 19,
+    "total_signals": 687,
+    "observed_devices": 19,
+    "devices_with_evidence": 19
+  },
+  "metrics": {
+    "accuracy": 0,
+    "macro": {
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "weighted": {
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    }
+  },
+  "confusion": {
+    "labels": null,
+    "counts": null
+  },
+  "calibration": {
+    "bins": null,
+    "expected_calibration_error": 0
+  },
+  "quality_gate": {
+    "passed": true,
+    "sample_count": 0,
+    "macro_f1": 0,
+    "expected_calibration_error": 0,
+    "reasons": [
+      "quality gate disabled"
+    ]
+  },
+  "splits": [
+    {
+      "name": "segment_1",
+      "description": "blind split by stable device identity",
+      "ids": [
+        "2e:89:cb:b3:d2:e3",
+        "34:13:43:61:b6:cf",
+        "6e:cc:11:51:a4:e0",
+        "ae:8c:e3:5a:dc:56"
+      ],
+      "size": 4
+    },
+    {
+      "name": "segment_2",
+      "description": "blind split by stable device identity",
+      "ids": [
+        "2a:fe:31:f6:99:53",
+        "46:92:be:fb:66:91",
+        "8c:e7:48:43:e3:1e",
+        "96:d2:d1:2c:02:35",
+        "98:77:d5:3f:b7:60",
+        "ae:71:8a:0b:80:59",
+        "b4:20:46:58:21:2d",
+        "ec:c9:ff:05:fc:44",
+        "host:brooks"
+      ],
+      "size": 9
+    },
+    {
+      "name": "segment_3",
+      "description": "blind split by stable device identity",
+      "ids": [
+        "2c:9e:00:95:33:bb",
+        "74:e2:0c:14:32:51",
+        "9c:67:d6:70:2e:2a",
+        "ae:bb:46:b1:96:b9",
+        "b4:20:46:6e:02:0d",
+        "c8:c6:fe:07:fe:92"
+      ],
+      "size": 6
+    }
+  ],
+  "ablations": [
+    {
+      "scenario": {
+        "name": "drop_mdns",
+        "description": "remove mDNS discovery signals",
+        "disabled_strategies": [
+          "mdns_active",
+          "mdns_passive"
+        ]
+      },
+      "sample_count": 19,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "drop_ssdp_upnp",
+        "description": "remove SSDP and UPnP description signals",
+        "disabled_strategies": [
+          "ssdp_active",
+          "ssdp_passive",
+          "upnp_description_fetch",
+          "upnp_service_control"
+        ]
+      },
+      "sample_count": 19,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "drop_snmp",
+        "description": "remove SNMP identity signals",
+        "disabled_families": [
+          "snmp"
+        ]
+      },
+      "sample_count": 19,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "drop_http_tls",
+        "description": "remove HTTP, TLS, and SSH fingerprinting signals",
+        "disabled_strategies": [
+          "http_header_probe",
+          "passive_http_metadata",
+          "http_favicon_fingerprint",
+          "http_api_probe",
+          "home_api_probe",
+          "credentialed_api",
+          "tls_cert_probe",
+          "passive_tls_handshake",
+          "passive_ssh_banner",
+          "ssh_banner_probe"
+        ]
+      },
+      "sample_count": 19,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "ports_only",
+        "description": "keep only ports-derived evidence",
+        "notes": "useful for measuring how much ports alone can tell us"
+      },
+      "sample_count": 19,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    }
+  ],
+  "notes": [
+    "no manual-label ground truth available for metrics",
+    "corpus_inputs=10"
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://netwise/schema",
+  "title": "Netwise",
+  "definitions": {
+    "Device": {
+      "type": "object",
+      "required": ["id", "ip", "mac", "vendor", "protocols_seen", "first_seen", "last_seen", "flags", "confidence", "device_type"],
+      "properties": {
+        "id": { "type": "string", "description": "Stable id: mac or hash" },
+        "ip": { "type": "string", "description": "IP address" },
+        "mac": { "type": "string", "description": "MAC address" },
+        "vendor": { "type": "string", "description": "OUI vendor" },
+        "hostname": { "type": ["string", "null"], "description": "Hostname if available" },
+        "protocols_seen": {
+          "type": "object",
+          "properties": {
+            "mdns": { "type": "array", "items": { "type": "string" }, "default": [] },
+            "ssdp": { "type": "array", "items": { "type": "string" }, "default": [] },
+            "netbios": { "type": "array", "items": { "type": "string" }, "default": [] }
+          },
+          "additionalProperties": false
+        },
+        "ports_open": { "type": "array", "items": { "type": "integer" }, "description": "Optional if port scan enabled" },
+        "first_seen": { "type": "string", "format": "date-time", "description": "ISO 8601" },
+        "last_seen": { "type": "string", "format": "date-time", "description": "ISO 8601" },
+        "flags": { "type": "array", "items": { "type": "string" }, "description": "e.g. new_device, risky_ports" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "device_type": {
+          "type": "string",
+          "enum": ["phone", "laptop", "router", "printer", "tv", "speaker", "camera", "iot", "unknown"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "NetworkInfo": {
+      "type": "object",
+      "properties": {
+        "subnet": { "type": "string" },
+        "gateway_ip": { "type": "string" },
+        "local_ip": { "type": "string" },
+        "interface_name": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "ScanResult": {
+      "type": "object",
+      "required": ["network", "devices", "scan_started_at", "scan_finished_at", "scan_id"],
+      "properties": {
+        "network": { "$ref": "#/definitions/NetworkInfo" },
+        "devices": { "type": "array", "items": { "$ref": "#/definitions/Device" } },
+        "scan_started_at": { "type": "string", "format": "date-time" },
+        "scan_finished_at": { "type": ["string", "null"], "format": "date-time" },
+        "scan_id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "AdviceRequest": {
+      "type": "object",
+      "required": ["scan_id", "device_id", "device", "network", "user_context"],
+      "properties": {
+        "scan_id": { "type": "string" },
+        "device_id": { "type": "string" },
+        "device": { "$ref": "#/definitions/Device" },
+        "network": { "type": "object", "description": "Subset of network facts" },
+        "user_context": {
+          "type": "string",
+          "enum": ["home", "airbnb", "office", "unknown"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "AdviceAction": {
+      "type": "object",
+      "required": ["title", "steps", "urgency"],
+      "properties": {
+        "title": { "type": "string" },
+        "steps": { "type": "array", "items": { "type": "string" } },
+        "urgency": { "type": "string", "enum": ["now", "soon", "nice_to_have"] }
+      },
+      "additionalProperties": false
+    },
+    "AdviceResponse": {
+      "type": "object",
+      "required": ["summary", "risk_level", "reasons", "actions", "uncertainty_notes"],
+      "properties": {
+        "summary": { "type": "string" },
+        "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+        "reasons": { "type": "array", "items": { "type": "string" }, "description": "Must cite facts" },
+        "actions": { "type": "array", "items": { "$ref": "#/definitions/AdviceAction" } },
+        "uncertainty_notes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# JS / TS build output
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Expo / Metro local state
+.expo/
+.expo-shared/
+
+# Go agent caches and local binaries
+/agent/.cache/
+/agent/.modcache/
+/agent/.telemetry/
+/agent/.tmp-gocache/
+/agent/.tmp-gomod/
+/agent/bin/
+/agent/*.exe
+*.test
+coverage.out
+
+# Local machine config and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+/agent/config.json
+
+# Local experiment scratch space
+/agent/experiment-chunks/
+
+# Logs and temp files
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+tmp/
+temp/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Keep experiment reports and analysis notes trackable on purpose.

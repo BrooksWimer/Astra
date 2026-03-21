@@ -1,0 +1,24 @@
+# There is no root .gitignore in this repo, so keep the standard exclusions here.
+/node_modules
+**/node_modules
+
+# Local Expo/React Native artifacts
+/mobile/.expo
+/mobile/.expo-shared
+/mobile/dist
+/mobile/web-build
+
+# Local native folders are regenerated for cloud builds when needed.
+/mobile/android
+/mobile/ios
+
+# The Go scanner lives in this monorepo, but it is not needed to build the mobile app.
+# Excluding it also avoids Windows EPERM issues while EAS is packaging temp shallow clones.
+/agent
+
+# General local caches and logs
+**/.cache
+**/.modcache
+**/.tmp-gocache
+**/.tmp-gomod
+**/*.log

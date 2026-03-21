@@ -1,0 +1,17 @@
+{
+  "name": "netwise",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "dev:server": "pnpm --filter server dev",
+    "dev:mobile": "pnpm --filter mobile start",
+    "agent": "cd agent && go run ./cmd/agent"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  }
+}

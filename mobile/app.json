@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "Astra",
+    "slug": "netwise",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.netwise",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f172a"
+      },
+      "package": "app.netwise",
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ]
+    },
+    "plugins": [
+      "expo-dev-client",
+      [
+        "react-native-ble-plx",
+        {
+          "bluetoothAlwaysPermission": "Astra uses Bluetooth to scan nearby devices."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "98f7cb05-3f46-4e24-8af5-19a7bb5a9662"
+      }
+    }
+  }
+}
