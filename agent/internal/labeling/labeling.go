@@ -573,7 +573,7 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 			if containsAny(lowerV, "hikvision", "axis", "cctv") {
 				add("camera", 0.35, "http:"+lowerV, sig.Tier)
 			}
-		case lowerS == "media_device_probe":
+		case lowerS == "media_device_probe" || lowerS == "media_device_quick_probe":
 			if lowerK == "ports" {
 				for _, p := range splitCSV(lowerV) {
 					switch p {
@@ -583,6 +583,15 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 						add("tv", 1.45, "port:"+p, sig.Tier)
 					case "8096":
 						add("tv", 0.55, "port:"+p, sig.Tier)
+					}
+				}
+				break
+			}
+			if lowerK == "udp_candidate_port" {
+				for _, p := range splitCSV(lowerV) {
+					switch p {
+					case "1900", "5000":
+						add("tv", 0.25, "port:"+p, sig.Tier)
 					}
 				}
 				break
@@ -626,7 +635,7 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 			if containsAny(lowerV, "openssh") {
 				add("laptop", 0.3, "ssh:"+lowerV, sig.Tier)
 			}
-		case lowerS == "port_service_correlation" || lowerS == "tcp_connect_microset" || lowerK == "ports":
+		case lowerS == "port_service_correlation" || lowerS == "tcp_connect_microset" || lowerK == "ports" || (lowerS == "media_device_quick_probe" && lowerK == "udp_candidate_port"):
 			mediaProbe := lowerS == "media_device_probe"
 			for _, p := range splitCSV(lowerV) {
 				switch p {

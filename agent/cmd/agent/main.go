@@ -83,11 +83,11 @@ func runExperimentMode() {
 	timeout := fs.Int("timeout", 0, "override scan timeout in seconds")
 	maxProbe := fs.Int("max-probe-ips", 0, "override max IP probes (0 means config default)")
 	enablePortScan := fs.Bool("enable-port-scan", false, "enable optional port scan during discovery")
-	profile := fs.String("profile", "", "named strategy profile to run (fast|medium|full)")
+	profile := fs.String("profile", "", "named strategy profile to run (fast|medium|full|label_core)")
 	strategyNames := fs.String("strategies", "", "comma-separated strategies to run (empty runs all discovered strategies)")
 	corpusInputs := fs.String("corpus", "", "comma-separated corpus files/directories for offline experiment mode")
 	fs.Usage = func() {
-		log.Printf("Usage: agent experiment [--out <file>] [--profile <fast|medium|full>] [--timeout <seconds>] [--max-probe-ips <n>] [--enable-port-scan] [--corpus <file-or-dir,...>]")
+		log.Printf("Usage: agent experiment [--out <file>] [--profile <fast|medium|full|label_core>] [--timeout <seconds>] [--max-probe-ips <n>] [--enable-port-scan] [--corpus <file-or-dir,...>]")
 	}
 	if err := fs.Parse(os.Args[2:]); err != nil {
 		log.Fatalf("experiment flags: %v", err)

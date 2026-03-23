@@ -285,6 +285,14 @@ var strategyAuditOverrides = map[string]StrategyAudit{
 		Recommendation: TierExpensive,
 		Notes:          "Excellent TV/media labeling probe, but one of the most expensive strategies.",
 	},
+	"media_device_quick_probe": {
+		ExecutionClass: ExecutionActive,
+		SpeedCost:      SpeedMedium,
+		DiscoveryValue: 2,
+		LabelingValue:  5,
+		Recommendation: TierSecondWave,
+		Notes:          "Targeted TV/camera label probe that keeps only the ports and protocol checks that mattered in scoped-v3 label tracing.",
+	},
 	"netbios_llmnr_passive": {
 		ExecutionClass: ExecutionPassive,
 		SpeedCost:      SpeedLow,
@@ -620,6 +628,19 @@ func StrategyProfiles() []StrategyProfile {
 			Name:          "fast",
 			Description:   "Prioritize high-value, lower-cost discovery and attribution strategies for quick practical identification.",
 			StrategyNames: strategiesForTiers(TierFastPath),
+		},
+		{
+			Name:        "label_core",
+			Description: "Run a stripped-down label-focused strategy set derived from the scoped-v3 labeled devices, while leaving discovery and the full scan path intact.",
+			StrategyNames: []string{
+				"arp_neighbor",
+				"arp_active_refresh",
+				"mac_oui_and_localadmin",
+				"ssdp_active",
+				"upnp_description_fetch",
+				"media_device_quick_probe",
+				"manual_operator_label_fallback",
+			},
 		},
 	}
 }
