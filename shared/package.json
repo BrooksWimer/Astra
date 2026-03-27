@@ -5,6 +5,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "test": "pnpm run build && node tests/bleClassifier.test.cjs",
     "generate-types": "node scripts/generate-types.js"
   },
   "devDependencies": {

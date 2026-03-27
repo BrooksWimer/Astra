@@ -30,11 +30,18 @@ type Config struct {
 	PassiveCaptureSnaplen      int                `json:"passive_capture_snaplen,omitempty"`
 	PassiveCaptureBufferPackets int               `json:"passive_capture_buffer_packets,omitempty"`
 	PassiveInfraEnabled        bool               `json:"passive_infra_enabled,omitempty"`
+	PassivePersistCorpus       bool               `json:"passive_persist_corpus,omitempty"`
+	PassiveInfraLookbackMinutes int               `json:"passive_infra_lookback_minutes,omitempty"`
 	PassiveSyslogListenAddr    string             `json:"passive_syslog_listen_addr,omitempty"`
 	PassiveResolverLogPath     string             `json:"passive_resolver_log_path,omitempty"`
 	PassiveDHCPLogPath         string             `json:"passive_dhcp_log_path,omitempty"`
 	PassiveSessionSource       string             `json:"passive_session_source,omitempty"`
 	PassiveSessionCommand      string             `json:"passive_session_command,omitempty"`
+	PassiveResolverFormat      string             `json:"passive_resolver_format,omitempty"`
+	PassiveSessionFormat       string             `json:"passive_session_format,omitempty"`
+	PassiveWiFiFormat          string             `json:"passive_wifi_format,omitempty"`
+	PassiveRadiusFormat        string             `json:"passive_radius_format,omitempty"`
+	PassivePCAPOutputPath      string             `json:"passive_pcap_output_path,omitempty"`
 	SNMPCommunities            []string           `json:"snmp_communities,omitempty"`
 	SNMPVersions               []string           `json:"snmp_versions,omitempty"`
 	SNMPV3Username             string             `json:"snmp_v3_username,omitempty"`
@@ -81,6 +88,12 @@ func Default() *Config {
 		PassiveCaptureSnaplen:    262144,
 		PassiveCaptureBufferPackets: 4096,
 		PassiveInfraEnabled:      false,
+		PassivePersistCorpus:     true,
+		PassiveInfraLookbackMinutes: 15,
+		PassiveResolverFormat:    "auto",
+		PassiveSessionFormat:     "auto",
+		PassiveWiFiFormat:        "auto",
+		PassiveRadiusFormat:      "auto",
 		SNMPCommunities:          []string{"public"},
 		SNMPVersions:             []string{"2c"},
 		AutoActionThreshold:      0.95,
@@ -130,6 +143,9 @@ func Load(path string) (*Config, error) {
 	}
 	if c.PassiveCaptureBufferPackets <= 0 {
 		c.PassiveCaptureBufferPackets = 4096
+	}
+	if c.PassiveInfraLookbackMinutes <= 0 {
+		c.PassiveInfraLookbackMinutes = 15
 	}
 	if len(c.PortsToCheck) == 0 {
 		c.PortsToCheck = []int{22, 80, 443, 445, 554, 631, 3389, 8009, 1900}
@@ -231,6 +247,11 @@ func Load(path string) (*Config, error) {
 	c.PassiveDHCPLogPath = strings.TrimSpace(c.PassiveDHCPLogPath)
 	c.PassiveSessionSource = strings.TrimSpace(c.PassiveSessionSource)
 	c.PassiveSessionCommand = strings.TrimSpace(c.PassiveSessionCommand)
+	c.PassiveResolverFormat = normalizePassiveFormat(c.PassiveResolverFormat, "auto")
+	c.PassiveSessionFormat = normalizePassiveFormat(c.PassiveSessionFormat, "auto")
+	c.PassiveWiFiFormat = normalizePassiveFormat(c.PassiveWiFiFormat, "auto")
+	c.PassiveRadiusFormat = normalizePassiveFormat(c.PassiveRadiusFormat, "auto")
+	c.PassivePCAPOutputPath = strings.TrimSpace(c.PassivePCAPOutputPath)
 	if !c.PassiveInfraEnabled && hasPassiveInfraSources(&c) {
 		c.PassiveInfraEnabled = true
 	}
@@ -282,4 +303,12 @@ func hasPassiveInfraSources(c *Config) bool {
 		c.PassiveDHCPLogPath != "" ||
 		c.PassiveSessionSource != "" ||
 		c.PassiveSessionCommand != ""
+}
+
+func normalizePassiveFormat(v, fallback string) string {
+	v = strings.ToLower(strings.TrimSpace(v))
+	if v == "" {
+		return fallback
+	}
+	return v
 }

@@ -11,14 +11,24 @@ const deviceSchema = z.object({
   ip: z.string(),
   mac: z.string(),
   vendor: z.string(),
-  hostname: z.string().nullable().optional(),
+  hostname: z.string().nullable(),
   protocols_seen: protocolsSeenSchema,
   ports_open: z.array(z.number()).optional(),
   first_seen: z.string(),
   last_seen: z.string(),
   flags: z.array(z.string()),
   confidence: z.number().min(0).max(1),
-  device_type: z.enum(["phone", "laptop", "router", "printer", "tv", "iot", "unknown"]),
+  device_type: z.enum([
+    "phone",
+    "laptop",
+    "router",
+    "printer",
+    "tv",
+    "speaker",
+    "camera",
+    "iot",
+    "unknown",
+  ]),
 });
 
 const networkSchema = z.object({

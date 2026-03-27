@@ -32,11 +32,11 @@ const strategyProbeTimeout = 900 * time.Millisecond
 const strategyCommandTimeout = 1800 * time.Millisecond
 
 var (
-	mdnsOnce      sync.Once
-	ssdpOnce      sync.Once
-	cachedMdns    []mdns.Entry
-	cachedSsdp    []ssdp.Entry
-	ssdpDescCache sync.Map
+	mdnsOnce              sync.Once
+	ssdpOnce              sync.Once
+	cachedMdns            []mdns.Entry
+	cachedSsdp            []ssdp.Entry
+	ssdpDescCache         sync.Map
 	passiveRuntimeMu      sync.RWMutex
 	passiveRuntimeSession *passive.Session
 	passiveRuntimeCorpus  *passive.Corpus
@@ -112,19 +112,32 @@ func StartPassiveRuntime(cfg *config.Config, localIP, ifaceName string) {
 		BufferPackets:    cfg.PassiveCaptureBufferPackets,
 		LocalIP:          strings.TrimSpace(localIP),
 		InfraEnabled:     cfg.PassiveInfraEnabled,
+		InfraLookback:    time.Duration(cfg.PassiveInfraLookbackMinutes) * time.Minute,
+		ResolverFormat:   strings.TrimSpace(cfg.PassiveResolverFormat),
+		SessionFormat:    strings.TrimSpace(cfg.PassiveSessionFormat),
+		WiFiFormat:       strings.TrimSpace(cfg.PassiveWiFiFormat),
+		RadiusFormat:     strings.TrimSpace(cfg.PassiveRadiusFormat),
 		SyslogListenAddr: strings.TrimSpace(cfg.PassiveSyslogListenAddr),
 		ResolverLogPath:  strings.TrimSpace(cfg.PassiveResolverLogPath),
 		DHCPLogPath:      strings.TrimSpace(cfg.PassiveDHCPLogPath),
 		SessionSource:    strings.TrimSpace(cfg.PassiveSessionSource),
 		SessionCommand:   strings.TrimSpace(cfg.PassiveSessionCommand),
+		PCAPOutputPath:   strings.TrimSpace(cfg.PassivePCAPOutputPath),
 	})
 }
 
 func StopPassiveRuntime() {
 	passiveRuntimeMu.Lock()
-	defer passiveRuntimeMu.Unlock()
+	session := passiveRuntimeSession
 	passiveRuntimeSession = nil
-	passiveRuntimeCorpus = nil
+	passiveRuntimeMu.Unlock()
+	if session == nil {
+		return
+	}
+	corpus := session.Wait()
+	passiveRuntimeMu.Lock()
+	passiveRuntimeCorpus = &corpus
+	passiveRuntimeMu.Unlock()
 }
 
 func passiveCorpus() passive.Corpus {
@@ -144,6 +157,10 @@ func passiveCorpus() passive.Corpus {
 	passiveRuntimeCorpus = &corpus
 	passiveRuntimeMu.Unlock()
 	return corpus
+}
+
+func PassiveRuntimeSnapshot() passive.Corpus {
+	return passiveCorpus()
 }
 
 func passiveObservationDetails(corpus passive.Corpus, matchQuality, sourceScope string, stat passiveWindowStat, extra map[string]string) map[string]string {

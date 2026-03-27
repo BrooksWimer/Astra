@@ -46,6 +46,20 @@ go test ./internal/classify/...
 | `max_probe_ips` | 0 | Cap on IPs to probe (0 = no limit) |
 | `large_subnet_throttle` | true | When true, cap probes on /16 or larger (uses max_probe_ips) |
 
+## Operator Docs
+
+If the current goal is understanding and directing the scanner rather than expanding it, start here:
+
+- `docs/WIFI_SCANNER_MAP.md`
+- `docs/WIFI_STRATEGY_CATALOG.md`
+- `docs/WIFI_DECISION_RUBRIC.md`
+
+The machine-readable strategy catalog can be exported from the live codebase:
+
+```bash
+go run ./cmd/agent catalog --format json
+```
+
 ## API (local testing)
 
 With the agent running:

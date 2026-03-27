@@ -21,6 +21,8 @@ import { StatusBar } from "expo-status-bar";
 import type { AdviceResponse } from "@netwise/shared";
 import { getAdvice } from "../api/advice";
 import { getDevice } from "../api/agent";
+import { AstraAssistantPromptCard } from "../features/assistant/AstraAssistantPromptCard";
+import { getDetectedServiceBaseUrl } from "../lib/urls";
 import type { RootStackParamList } from "../navigation/RootStack";
 import {
   deviceNeedsReview,
@@ -43,6 +45,7 @@ export function DeviceDetailScreen() {
   const navigation = useNavigation<Nav>();
   const agentBaseUrl = useAgentStore((state) => state.agentBaseUrl);
   const adviceBaseUrl = useAgentStore((state) => state.adviceBaseUrl);
+  const effectiveAdviceBaseUrl = adviceBaseUrl || getDetectedServiceBaseUrl("3000");
   const agentInfo = useAgentStore((state) => state.agentInfo);
   const [advice, setAdvice] = useState<AdviceResponse | null>(null);
   const [adviceLoading, setAdviceLoading] = useState(false);
@@ -67,12 +70,12 @@ export function DeviceDetailScreen() {
   };
 
   const fetchAdvice = async () => {
-    if (!device || !agentBaseUrl || !adviceBaseUrl) return;
+    if (!device || !agentBaseUrl || !effectiveAdviceBaseUrl) return;
 
     setAdviceError(null);
     setAdviceLoading(true);
     try {
-      const result = await getAdvice(adviceBaseUrl, {
+      const result = await getAdvice(effectiveAdviceBaseUrl, {
         scan_id: "last",
         device_id: device.id,
         device,
@@ -86,7 +89,7 @@ export function DeviceDetailScreen() {
       });
       setAdvice(result);
     } catch {
-      setAdviceError(`Could not reach the advice server at ${adviceBaseUrl}.`);
+      setAdviceError(`Could not reach the advice server at ${effectiveAdviceBaseUrl}.`);
     } finally {
       setAdviceLoading(false);
     }
@@ -214,8 +217,18 @@ export function DeviceDetailScreen() {
             <FactRow label="Local IP" value={agentInfo?.local_ip || "Unknown"} />
             <FactRow label="Gateway" value={agentInfo?.gateway || "Unknown"} />
             <FactRow label="Network" value={agentInfo?.cidr || agentInfo?.subnet || "Unknown"} />
-            <FactRow label="Advice server" value={adviceBaseUrl || "Unavailable"} />
+            <FactRow label="Advice server" value={effectiveAdviceBaseUrl || "Unavailable"} />
           </View>
+
+          <AstraAssistantPromptCard
+            title="Ask Astra About This Device"
+            body="Open the assistant with prompts focused on this device and its current network context."
+            prompts={[
+              `What should I know about ${title}?`,
+              "Does this device look risky?",
+              "What should I do next?",
+            ]}
+          />
 
           <View style={styles.sectionCard}>
             <View style={styles.advisorHeader}>
@@ -231,9 +244,12 @@ export function DeviceDetailScreen() {
             </View>
 
             <Pressable
-              style={[styles.adviceButton, (adviceLoading || !adviceBaseUrl) && styles.buttonDisabled]}
+              style={[
+                styles.adviceButton,
+                (adviceLoading || !effectiveAdviceBaseUrl) && styles.buttonDisabled,
+              ]}
               onPress={fetchAdvice}
-              disabled={adviceLoading || !adviceBaseUrl}
+              disabled={adviceLoading || !effectiveAdviceBaseUrl}
             >
               {adviceLoading ? (
                 <ActivityIndicator color={AstraColors.textPrimary} />

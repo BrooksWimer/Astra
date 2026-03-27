@@ -12,6 +12,7 @@ import (
 	"github.com/netwise/agent/internal/evidence"
 	"github.com/netwise/agent/internal/labeling"
 	"github.com/netwise/agent/internal/network"
+	"github.com/netwise/agent/internal/passive"
 	"github.com/netwise/agent/internal/store"
 	"github.com/netwise/agent/internal/strategy"
 )
@@ -26,6 +27,7 @@ type StrategyExperimentReport struct {
 	StartedAt            string                  `json:"started_at"`
 	FinishedAt           string                  `json:"finished_at"`
 	ScanDurationMs       int64                   `json:"scan_duration_ms"`
+	PassiveCorpus        *PassiveCorpusReport    `json:"passive_corpus,omitempty"`
 	TargetCount          int                     `json:"target_count"`
 	TargetsWithEvidence  int                     `json:"targets_with_evidence"`
 	StrategyReports      []StrategyYield         `json:"strategy_reports"`
@@ -37,16 +39,16 @@ type StrategyExperimentReport struct {
 }
 
 type StrategyYield struct {
-	Strategy                string         `json:"strategy"`
-	DurationMs              int64          `json:"duration_ms,omitempty"`
-	TargetsHit              int            `json:"targets_hit"`
-	TargetsNoData           int            `json:"targets_no_data"`
-	TotalObservations       int            `json:"total_observations"`
-	RealDataObservations    int            `json:"real_data_observations,omitempty"`
-	DirectMatchObservations int            `json:"direct_match_observations,omitempty"`
-	StrongInferredObservations int         `json:"strong_inferred_observations,omitempty"`
-	AmbientContextObservations int         `json:"ambient_context_observations,omitempty"`
-	ObservationStatusCounts map[string]int `json:"observation_status_counts,omitempty"`
+	Strategy                   string         `json:"strategy"`
+	DurationMs                 int64          `json:"duration_ms,omitempty"`
+	TargetsHit                 int            `json:"targets_hit"`
+	TargetsNoData              int            `json:"targets_no_data"`
+	TotalObservations          int            `json:"total_observations"`
+	RealDataObservations       int            `json:"real_data_observations,omitempty"`
+	DirectMatchObservations    int            `json:"direct_match_observations,omitempty"`
+	StrongInferredObservations int            `json:"strong_inferred_observations,omitempty"`
+	AmbientContextObservations int            `json:"ambient_context_observations,omitempty"`
+	ObservationStatusCounts    map[string]int `json:"observation_status_counts,omitempty"`
 }
 
 type TargetSummary struct {
@@ -93,6 +95,35 @@ type EvidenceGraphSummary struct {
 	TotalSignals        int    `json:"total_signals"`
 	ObservedDevices     int    `json:"observed_devices"`
 	DevicesWithEvidence int    `json:"devices_with_evidence"`
+}
+
+type PassiveCorpusReport struct {
+	CapturePoint         string                        `json:"capture_point,omitempty"`
+	Interface            string                        `json:"interface,omitempty"`
+	Window               string                        `json:"window,omitempty"`
+	InfraLookback        string                        `json:"infra_lookback,omitempty"`
+	StartedAt            string                        `json:"started_at,omitempty"`
+	FinishedAt           string                        `json:"finished_at,omitempty"`
+	HostCaptureEnabled   bool                          `json:"host_capture_enabled"`
+	HostCaptureAvailable bool                          `json:"host_capture_available"`
+	HostCaptureReason    string                        `json:"host_capture_reason,omitempty"`
+	InfraEnabled         bool                          `json:"infra_enabled"`
+	PCAPOutputPath       string                        `json:"pcap_output_path,omitempty"`
+	PCAPOutputError      string                        `json:"pcap_output_error,omitempty"`
+	Flows                []passive.FlowEvent           `json:"flows,omitempty"`
+	DNS                  []passive.DNSEvent            `json:"dns,omitempty"`
+	DHCP                 []passive.DHCPEvent           `json:"dhcp,omitempty"`
+	MDNS                 []passive.MDNSEvent           `json:"mdns,omitempty"`
+	SSDP                 []passive.SSDPEVent           `json:"ssdp,omitempty"`
+	TLSClients           []passive.TLSClientEvent      `json:"tls_clients,omitempty"`
+	TLSServers           []passive.TLSServerEvent      `json:"tls_servers,omitempty"`
+	HTTP                 []passive.HTTPEvent           `json:"http,omitempty"`
+	SSH                  []passive.SSHEvent            `json:"ssh,omitempty"`
+	Resolver             []passive.ResolverEvent       `json:"resolver,omitempty"`
+	Sessions             []passive.SessionProfileEvent `json:"sessions,omitempty"`
+	WiFi                 []passive.WiFiEvent           `json:"wifi,omitempty"`
+	Radius               []passive.RadiusEvent         `json:"radius,omitempty"`
+	Netflow              []passive.NetflowEvent        `json:"netflow,omitempty"`
 }
 
 func RunStrategyExperiment(netInfo *network.Info, cfg *config.Config, strategyNames []string) (*StrategyExperimentReport, error) {
@@ -159,6 +190,7 @@ func buildStrategyExperimentReport(result *store.ScanResult, strategyNames []str
 	devices := FilterDevicesForStrategySubset(result.Devices, effectiveStrategyNames(cfg, strategyNames))
 	report := buildStrategyExperimentReportFromDevices(devices, result.Network, result.ScanID, result.ScanStartedAt, finishedAt, effectiveStrategyNames(cfg, strategyNames), cfg, "live", nil)
 	report.StrategyProfile = resolveStrategyProfile(cfg, strategyNames)
+	report.PassiveCorpus = passiveCorpusReport(strategy.PassiveRuntimeSnapshot(), cfg)
 	return report
 }
 
@@ -276,15 +308,15 @@ func buildStrategyExperimentReportFromDevices(devices []store.Device, networkInf
 		}
 		availability[name] = hitTargets
 		strategyReports = append(strategyReports, StrategyYield{
-			Strategy:                name,
-			TargetsHit:              hitTargets,
-			TargetsNoData:           totalTargets - hitTargets,
-			TotalObservations:       obsCount,
-			RealDataObservations:    strategyRealCounts[name],
-			DirectMatchObservations: strategyDirectCounts[name],
+			Strategy:                   name,
+			TargetsHit:                 hitTargets,
+			TargetsNoData:              totalTargets - hitTargets,
+			TotalObservations:          obsCount,
+			RealDataObservations:       strategyRealCounts[name],
+			DirectMatchObservations:    strategyDirectCounts[name],
 			StrongInferredObservations: strategyStrongCounts[name],
 			AmbientContextObservations: strategyAmbientCounts[name],
-			ObservationStatusCounts: copyStringIntMap(statusCounts),
+			ObservationStatusCounts:    copyStringIntMap(statusCounts),
 		})
 	}
 
@@ -322,6 +354,69 @@ func buildStrategyExperimentReportFromDevices(devices []store.Device, networkInf
 		NoDataTargetIPs:      targetNoData,
 		StrategyAvailability: availability,
 	}
+}
+
+func passiveCorpusReport(corpus passive.Corpus, cfg *config.Config) *PassiveCorpusReport {
+	if cfg == nil {
+		cfg = config.Default()
+	}
+	if !cfg.PassivePersistCorpus {
+		return nil
+	}
+	if corpus.StartedAt.IsZero() &&
+		corpus.FinishedAt.IsZero() &&
+		strings.TrimSpace(corpus.CapturePoint) == "" &&
+		len(corpus.Flows) == 0 &&
+		len(corpus.DNS) == 0 &&
+		len(corpus.DHCP) == 0 &&
+		len(corpus.MDNS) == 0 &&
+		len(corpus.SSDP) == 0 &&
+		len(corpus.TLSClients) == 0 &&
+		len(corpus.TLSServers) == 0 &&
+		len(corpus.HTTP) == 0 &&
+		len(corpus.SSH) == 0 &&
+		len(corpus.Resolver) == 0 &&
+		len(corpus.Sessions) == 0 &&
+		len(corpus.WiFi) == 0 &&
+		len(corpus.Radius) == 0 &&
+		len(corpus.Netflow) == 0 {
+		return nil
+	}
+	return &PassiveCorpusReport{
+		CapturePoint:         strings.TrimSpace(corpus.CapturePoint),
+		Interface:            strings.TrimSpace(corpus.Interface),
+		Window:               corpus.Window.String(),
+		InfraLookback:        corpus.InfraLookback.String(),
+		StartedAt:            formatPassiveTime(corpus.StartedAt),
+		FinishedAt:           formatPassiveTime(corpus.FinishedAt),
+		HostCaptureEnabled:   corpus.HostCaptureEnabled,
+		HostCaptureAvailable: corpus.HostCaptureAvailable,
+		HostCaptureReason:    strings.TrimSpace(corpus.HostCaptureReason),
+		InfraEnabled:         corpus.InfraEnabled,
+		PCAPOutputPath:       strings.TrimSpace(corpus.PCAPOutputPath),
+		PCAPOutputError:      strings.TrimSpace(corpus.PCAPOutputError),
+		Flows:                append([]passive.FlowEvent{}, corpus.Flows...),
+		DNS:                  append([]passive.DNSEvent{}, corpus.DNS...),
+		DHCP:                 append([]passive.DHCPEvent{}, corpus.DHCP...),
+		MDNS:                 append([]passive.MDNSEvent{}, corpus.MDNS...),
+		SSDP:                 append([]passive.SSDPEVent{}, corpus.SSDP...),
+		TLSClients:           append([]passive.TLSClientEvent{}, corpus.TLSClients...),
+		TLSServers:           append([]passive.TLSServerEvent{}, corpus.TLSServers...),
+		HTTP:                 append([]passive.HTTPEvent{}, corpus.HTTP...),
+		SSH:                  append([]passive.SSHEvent{}, corpus.SSH...),
+		Resolver:             append([]passive.ResolverEvent{}, corpus.Resolver...),
+		Sessions:             append([]passive.SessionProfileEvent{}, corpus.Sessions...),
+		WiFi:                 append([]passive.WiFiEvent{}, corpus.WiFi...),
+		Radius:               append([]passive.RadiusEvent{}, corpus.Radius...),
+		Netflow:              append([]passive.NetflowEvent{}, corpus.Netflow...),
+	}
+}
+
+func formatPassiveTime(ts time.Time) string {
+	if ts.IsZero() {
+		return ""
+	}
+	return ts.UTC().Format(time.RFC3339)
 }
 
 func applyStrategyRunStats(report *StrategyExperimentReport, runStats []StrategyRunStat) {
@@ -761,10 +856,49 @@ func FilterDevicesForStrategySubset(devices []store.Device, strategyNames []stri
 				filtered = append(filtered, obs)
 			}
 			d.Observations = filtered
+			sanitizeExperimentDeviceForStrategySubset(&d, allowed)
 		}
 		out = append(out, d)
 	}
 	return out
+}
+
+func sanitizeExperimentDeviceForStrategySubset(d *store.Device, allowed map[string]struct{}) {
+	if d == nil || len(allowed) == 0 {
+		return
+	}
+	missingAll := func(names ...string) bool {
+		for _, name := range names {
+			if _, ok := allowed[normalizeExperimentStrategyName(name)]; ok {
+				return false
+			}
+		}
+		return true
+	}
+	if missingAll("tcp_connect_microset") {
+		d.PortsOpen = nil
+	}
+	if missingAll("mdns_active") {
+		d.ProtocolsSeen.MDNS = nil
+	}
+	if missingAll("ssdp_active", "upnp_description_fetch", "upnp_service_control") {
+		d.ProtocolsSeen.SSDP = nil
+		d.SSDPServer = ""
+	}
+	if missingAll("netbios_llmnr_passive", "smb_nbns_active", "llmnr_responder_analysis") {
+		d.ProtocolsSeen.NetBIOS = nil
+	}
+	if missingAll("http_header_probe", "home_api_probe", "credentialed_api") {
+		d.HTTPServer = ""
+	}
+	if missingAll("tls_cert_probe") {
+		d.TLSSubject = ""
+		d.TLSIssuer = ""
+		d.TLSSANS = ""
+	}
+	if missingAll("ssh_banner_probe") {
+		d.SSHBanner = ""
+	}
 }
 
 func normalizeExperimentStrategyName(name string) string {

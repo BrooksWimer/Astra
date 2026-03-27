@@ -3,11 +3,15 @@ package passive
 import (
 	"context"
 	"fmt"
+	"net"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
+	"github.com/google/gopacket/pcapgo"
 )
 
 func Start(cfg RuntimeConfig) *Session {
@@ -18,9 +22,11 @@ func Start(cfg RuntimeConfig) *Session {
 			CapturePoint:       "host_passive",
 			Interface:          cfg.Interface,
 			Window:             cfg.Window,
+			InfraLookback:      cfg.InfraLookback,
 			StartedAt:          time.Now().UTC(),
 			HostCaptureEnabled: cfg.Enabled,
 			InfraEnabled:       cfg.InfraEnabled,
+			PCAPOutputPath:     strings.TrimSpace(cfg.PCAPOutputPath),
 		},
 	}
 	go s.run(cfg)
@@ -58,7 +64,7 @@ func (s *Session) run(cfg RuntimeConfig) {
 		go s.captureNetflow(ctx)
 	}
 	if cfg.InfraEnabled && strings.TrimSpace(cfg.SyslogListenAddr) != "" {
-		go s.listenSyslog(ctx, cfg.SyslogListenAddr)
+		go s.listenSyslog(ctx, cfg.SyslogListenAddr, cfg.WiFiFormat, cfg.RadiusFormat)
 	}
 
 	<-ctx.Done()
@@ -71,9 +77,9 @@ func (s *Session) run(cfg RuntimeConfig) {
 		}
 	}
 	if cfg.InfraEnabled {
-		s.loadResolverEvents(cfg.ResolverLogPath)
-		s.loadDHCPLogEvents(cfg.DHCPLogPath)
-		s.loadSessionProfileSource(cfg.SessionSource, cfg.SessionCommand)
+		s.loadResolverEvents(cfg.ResolverLogPath, cfg.ResolverFormat, cfg.InfraLookback)
+		s.loadDHCPLogEvents(cfg.DHCPLogPath, cfg.InfraLookback)
+		s.loadSessionProfileSource(cfg.SessionSource, cfg.SessionCommand, cfg.SessionFormat, cfg.RadiusFormat, cfg.InfraLookback)
 	}
 
 	s.mu.Lock()
@@ -94,14 +100,23 @@ func normalizeConfig(cfg RuntimeConfig) RuntimeConfig {
 	if cfg.BufferPackets <= 0 {
 		cfg.BufferPackets = 4096
 	}
+	if cfg.InfraLookback <= 0 {
+		cfg.InfraLookback = 15 * time.Minute
+	}
+	cfg.ResolverFormat = normalizeFormat(cfg.ResolverFormat)
+	cfg.SessionFormat = normalizeFormat(cfg.SessionFormat)
+	cfg.WiFiFormat = normalizeFormat(cfg.WiFiFormat)
+	cfg.RadiusFormat = normalizeFormat(cfg.RadiusFormat)
+	cfg.PCAPOutputPath = strings.TrimSpace(cfg.PCAPOutputPath)
 	return cfg
 }
 
 func (s *Session) capturePackets(ctx context.Context, cfg RuntimeConfig) error {
-	if strings.TrimSpace(cfg.Interface) == "" || strings.EqualFold(cfg.Interface, "primary") {
-		return fmt.Errorf("passive_capture_interface_not_resolved")
+	deviceName, err := resolveCaptureDevice(cfg)
+	if err != nil {
+		return err
 	}
-	inactive, err := pcap.NewInactiveHandle(cfg.Interface)
+	inactive, err := pcap.NewInactiveHandle(deviceName)
 	if err != nil {
 		return err
 	}
@@ -117,8 +132,13 @@ func (s *Session) capturePackets(ctx context.Context, cfg RuntimeConfig) error {
 	defer handle.Close()
 	_ = handle.SetBPFFilter("udp or tcp or icmp6")
 	s.mu.Lock()
-	s.corpus.CapturePoint = "pcap:" + cfg.Interface
+	s.corpus.Interface = deviceName
+	s.corpus.CapturePoint = "pcap:" + deviceName
 	s.mu.Unlock()
+	pcapFile, pcapWriter := s.openPCAPWriter(cfg, handle)
+	if pcapFile != nil {
+		defer pcapFile.Close()
+	}
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	go func() {
@@ -126,9 +146,141 @@ func (s *Session) capturePackets(ctx context.Context, cfg RuntimeConfig) error {
 		handle.Close()
 	}()
 	for packet := range packetSource.Packets() {
+		if pcapWriter != nil {
+			_ = pcapWriter.WritePacket(packet.Metadata().CaptureInfo, packet.Data())
+		}
 		s.parsePacket(packet)
 	}
 	return nil
+}
+
+func normalizeFormat(v string) string {
+	v = strings.ToLower(strings.TrimSpace(v))
+	if v == "" {
+		return "auto"
+	}
+	return v
+}
+
+func (s *Session) openPCAPWriter(cfg RuntimeConfig, handle *pcap.Handle) (*os.File, *pcapgo.Writer) {
+	path := strings.TrimSpace(cfg.PCAPOutputPath)
+	if path == "" {
+		return nil, nil
+	}
+	dir := filepath.Dir(path)
+	if dir != "" && dir != "." {
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			s.setPCAPError(err.Error())
+			return nil, nil
+		}
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		s.setPCAPError(err.Error())
+		return nil, nil
+	}
+	writer := pcapgo.NewWriter(file)
+	if err := writer.WriteFileHeader(uint32(cfg.Snaplen), handle.LinkType()); err != nil {
+		file.Close()
+		s.setPCAPError(err.Error())
+		return nil, nil
+	}
+	s.setPCAPOutputPath(path)
+	return file, writer
+}
+
+func resolveCaptureDevice(cfg RuntimeConfig) (string, error) {
+	desired := strings.TrimSpace(cfg.Interface)
+	localIP := strings.TrimSpace(cfg.LocalIP)
+	devices, err := pcap.FindAllDevs()
+	if err != nil {
+		return "", err
+	}
+	if len(devices) == 0 {
+		return "", fmt.Errorf("no_pcap_devices_found")
+	}
+	if desired != "" && !strings.EqualFold(desired, "primary") {
+		if match := matchCaptureDeviceByName(devices, desired); match != "" {
+			return match, nil
+		}
+	}
+	if localIP != "" {
+		if match := matchCaptureDeviceByLocalIP(devices, localIP); match != "" {
+			return match, nil
+		}
+	}
+	if desired != "" && !strings.EqualFold(desired, "primary") {
+		return "", fmt.Errorf("passive_capture_interface_not_found:%s", desired)
+	}
+	if match := firstUsableCaptureDevice(devices); match != "" {
+		return match, nil
+	}
+	return "", fmt.Errorf("passive_capture_interface_not_resolved")
+}
+
+func matchCaptureDeviceByName(devices []pcap.Interface, desired string) string {
+	want := strings.ToLower(strings.TrimSpace(desired))
+	if want == "" {
+		return ""
+	}
+	for _, dev := range devices {
+		if strings.EqualFold(strings.TrimSpace(dev.Name), desired) {
+			return dev.Name
+		}
+	}
+	for _, dev := range devices {
+		if strings.EqualFold(strings.TrimSpace(dev.Description), desired) {
+			return dev.Name
+		}
+	}
+	for _, dev := range devices {
+		name := strings.ToLower(strings.TrimSpace(dev.Name))
+		desc := strings.ToLower(strings.TrimSpace(dev.Description))
+		if strings.Contains(name, want) || strings.Contains(desc, want) {
+			return dev.Name
+		}
+	}
+	return ""
+}
+
+func matchCaptureDeviceByLocalIP(devices []pcap.Interface, localIP string) string {
+	ip := net.ParseIP(strings.TrimSpace(localIP))
+	if ip == nil {
+		return ""
+	}
+	for _, dev := range devices {
+		for _, addr := range dev.Addresses {
+			if addr.IP != nil && addr.IP.Equal(ip) {
+				return dev.Name
+			}
+		}
+	}
+	return ""
+}
+
+func firstUsableCaptureDevice(devices []pcap.Interface) string {
+	for _, dev := range devices {
+		if hasNonLoopbackAddress(dev) {
+			return dev.Name
+		}
+	}
+	if len(devices) == 0 {
+		return ""
+	}
+	return devices[0].Name
+}
+
+func hasNonLoopbackAddress(dev pcap.Interface) bool {
+	for _, addr := range dev.Addresses {
+		if addr.IP == nil {
+			continue
+		}
+		if addr.IP.IsLoopback() {
+			continue
+		}
+		return true
+	}
+	return false
 }
 
 func (s *Session) setCaptureAvailable() {
@@ -148,6 +300,18 @@ func (s *Session) setCaptureUnavailable(reason string) {
 		reason = "passive_capture_unavailable"
 	}
 	s.corpus.HostCaptureReason = reason
+}
+
+func (s *Session) setPCAPOutputPath(path string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.corpus.PCAPOutputPath = strings.TrimSpace(path)
+}
+
+func (s *Session) setPCAPError(reason string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.corpus.PCAPOutputError = strings.TrimSpace(reason)
 }
 
 func (s *Session) appendFlow(v FlowEvent) {

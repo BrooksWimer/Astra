@@ -28,14 +28,14 @@ type upnpRoot struct {
 }
 
 type upnpDevice struct {
-	DeviceType      string       `xml:"deviceType"`
-	FriendlyName    string       `xml:"friendlyName"`
-	Manufacturer    string       `xml:"manufacturer"`
-	ModelName       string       `xml:"modelName"`
-	ModelNumber     string       `xml:"modelNumber"`
-	SerialNumber    string       `xml:"serialNumber"`
-	UDN             string       `xml:"UDN"`
-	PresentationURL string       `xml:"presentationURL"`
+	DeviceType      string        `xml:"deviceType"`
+	FriendlyName    string        `xml:"friendlyName"`
+	Manufacturer    string        `xml:"manufacturer"`
+	ModelName       string        `xml:"modelName"`
+	ModelNumber     string        `xml:"modelNumber"`
+	SerialNumber    string        `xml:"serialNumber"`
+	UDN             string        `xml:"UDN"`
+	PresentationURL string        `xml:"presentationURL"`
 	ServiceList     []upnpService `xml:"serviceList>service"`
 }
 
@@ -56,7 +56,15 @@ func upnpDescriptionFetchCollectTarget(target Target, emit ObservationSink) {
 		})
 		return
 	}
-	client := &http.Client{Timeout: 5 * time.Second}
+	// Local-device fetches should bypass host proxy settings; otherwise LAN
+	// UPnP description requests can be misrouted through unrelated HTTP proxy
+	// env vars and fail even when the device is reachable.
+	client := &http.Client{
+		Timeout: 5 * time.Second,
+		Transport: &http.Transport{
+			Proxy: nil,
+		},
+	}
 	matchedAny := false
 	seenLocations := map[string]struct{}{}
 	for _, entry := range entries {

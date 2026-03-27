@@ -18,6 +18,8 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Device } from "@netwise/shared";
+import { AstraAssistantPromptCard } from "../features/assistant/AstraAssistantPromptCard";
+import { BluetoothScanPanel } from "../features/bluetooth/BluetoothScanPanel";
 import { getDevices, getScanResult, startScan } from "../api/agent";
 import type { RootStackParamList } from "../navigation/RootStack";
 import {
@@ -267,6 +269,16 @@ export function DashboardScreen() {
 
           {activeTab === "wifi" ? (
             <>
+              <AstraAssistantPromptCard
+                title="Ask Astra About This Scan"
+                body="Launch the assistant with network-aware prompts based on what you are seeing right now."
+                prompts={[
+                  "What stands out in this network scan?",
+                  "What should I review first?",
+                  "How risky does this environment look?",
+                ]}
+              />
+
               <View style={styles.networkCard}>
                 <View style={styles.networkCardHeader}>
                   <Text style={styles.sectionTitle}>Network snapshot</Text>
@@ -324,15 +336,18 @@ export function DashboardScreen() {
               )}
             </>
           ) : (
-            <View style={styles.placeholderCard}>
-              <View style={styles.placeholderBadge}>
-                <Ionicons name="bluetooth-outline" size={20} color={AstraColors.accentSoft} />
-              </View>
-              <Text style={styles.placeholderTitle}>Bluetooth Scan is coming next</Text>
-              <Text style={styles.placeholderBody}>
-                Astra's Bluetooth Scan view is reserved for BLE discovery. The native BLE setup is now in place, but you'll need a development build instead of Expo Go before we wire in live scanning.
-              </Text>
-            </View>
+            <>
+              <AstraAssistantPromptCard
+                title="Ask Astra About Bluetooth"
+                body="Start the assistant from the Bluetooth view with prompts tailored to nearby devices and unnamed signals."
+                prompts={[
+                  "What might these named Bluetooth devices be?",
+                  "How should I interpret unnamed signals?",
+                  "What should I pay attention to here?",
+                ]}
+              />
+              <BluetoothScanPanel />
+            </>
           )}
         </ScrollView>
       </SafeAreaView>

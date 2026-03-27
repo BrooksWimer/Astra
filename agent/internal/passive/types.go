@@ -6,31 +6,40 @@ import (
 )
 
 type RuntimeConfig struct {
-	Enabled           bool
-	Window            time.Duration
-	Interface         string
-	Promiscuous       bool
-	Snaplen           int
-	BufferPackets     int
-	LocalIP           string
-	InfraEnabled      bool
-	SyslogListenAddr  string
-	ResolverLogPath   string
-	DHCPLogPath       string
-	SessionSource     string
-	SessionCommand    string
+	Enabled          bool
+	Window           time.Duration
+	Interface        string
+	Promiscuous      bool
+	Snaplen          int
+	BufferPackets    int
+	LocalIP          string
+	InfraEnabled     bool
+	InfraLookback    time.Duration
+	ResolverFormat   string
+	SessionFormat    string
+	WiFiFormat       string
+	RadiusFormat     string
+	SyslogListenAddr string
+	ResolverLogPath  string
+	DHCPLogPath      string
+	SessionSource    string
+	SessionCommand   string
+	PCAPOutputPath   string
 }
 
 type Corpus struct {
 	CapturePoint         string
 	Interface            string
 	Window               time.Duration
+	InfraLookback        time.Duration
 	StartedAt            time.Time
 	FinishedAt           time.Time
 	HostCaptureEnabled   bool
 	HostCaptureAvailable bool
 	HostCaptureReason    string
 	InfraEnabled         bool
+	PCAPOutputPath       string
+	PCAPOutputError      string
 	Flows                []FlowEvent
 	TLSServers           []TLSServerEvent
 	TLSClients           []TLSClientEvent
@@ -224,6 +233,7 @@ type ResolverEvent struct {
 	ClientIP    string
 	ClientMAC   string
 	Query       string
+	QueryType   string
 	Category    string
 	LocalLookup bool
 	SRVLookup   bool

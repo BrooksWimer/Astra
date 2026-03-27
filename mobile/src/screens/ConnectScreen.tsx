@@ -17,18 +17,28 @@ import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { getInfo, health } from "../api/agent";
-import { deriveAdviceBaseUrl, normalizeBaseUrl } from "../lib/urls";
+import {
+  deriveAdviceBaseUrl,
+  normalizeBaseUrl,
+} from "../lib/urls";
 import type { RootStackParamList } from "../navigation/RootStack";
 import { useAgentStore } from "../store/agentStore";
 import { AstraColors, AstraShadow } from "../theme/astra";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "Connect">;
 
+const DEFAULT_AGENT_BASE_URL = "http://192.168.4.253:7777";
+const DEFAULT_ADVICE_BASE_URL = "http://192.168.4.253:3000";
+
 export function ConnectScreen() {
   const agentBaseUrl = useAgentStore((state) => state.agentBaseUrl);
   const existingAdviceBaseUrl = useAgentStore((state) => state.adviceBaseUrl);
-  const [agentInput, setAgentInput] = useState(agentBaseUrl ?? "");
-  const [adviceInput, setAdviceInput] = useState(existingAdviceBaseUrl ?? "");
+  const [agentInput, setAgentInput] = useState(
+    agentBaseUrl ?? DEFAULT_AGENT_BASE_URL
+  );
+  const [adviceInput, setAdviceInput] = useState(
+    existingAdviceBaseUrl ?? DEFAULT_ADVICE_BASE_URL
+  );
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -120,7 +130,7 @@ export function ConnectScreen() {
               <Text style={styles.label}>Agent URL</Text>
               <TextInput
                 style={styles.input}
-                placeholder="http://192.168.1.10:7777"
+                placeholder={DEFAULT_AGENT_BASE_URL}
                 placeholderTextColor={AstraColors.textMuted}
                 value={agentInput}
                 onChangeText={(value) => {
@@ -139,7 +149,8 @@ export function ConnectScreen() {
                 <View>
                   <Text style={styles.advancedTitle}>Advanced settings</Text>
                   <Text style={styles.advancedHint}>
-                    Advice server defaults to {derivedAdviceUrl || "the same host on port 3000"}.
+                    Advice server defaults to{" "}
+                    {derivedAdviceUrl || DEFAULT_ADVICE_BASE_URL || "the same host on port 3000"}.
                   </Text>
                 </View>
                 <Ionicons
@@ -154,7 +165,9 @@ export function ConnectScreen() {
                   <Text style={styles.label}>Advice server override</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder={derivedAdviceUrl || "http://192.168.1.10:3000"}
+                    placeholder={
+                      derivedAdviceUrl || DEFAULT_ADVICE_BASE_URL || "http://192.168.1.10:3000"
+                    }
                     placeholderTextColor={AstraColors.textMuted}
                     value={adviceInput}
                     onChangeText={(value) => {
@@ -169,6 +182,12 @@ export function ConnectScreen() {
                     Leave this blank to reuse the same host and point Astra's advisor to port 3000.
                   </Text>
                 </View>
+              ) : null}
+
+              {DEFAULT_AGENT_BASE_URL ? (
+                <Text style={styles.fieldHint}>
+                  Prefilled for this dev machine: {DEFAULT_AGENT_BASE_URL}
+                </Text>
               ) : null}
 
               {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -193,8 +212,8 @@ export function ConnectScreen() {
                   style={styles.secondaryButton}
                   onPress={() => {
                     clearSession();
-                    setAgentInput("");
-                    setAdviceInput("");
+                    setAgentInput(DEFAULT_AGENT_BASE_URL);
+                    setAdviceInput(DEFAULT_ADVICE_BASE_URL);
                     setError(null);
                     navigation.goBack();
                   }}

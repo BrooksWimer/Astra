@@ -18,6 +18,7 @@ import (
 	"github.com/netwise/agent/internal/network"
 	"github.com/netwise/agent/internal/optimize"
 	"github.com/netwise/agent/internal/scanner"
+	"github.com/netwise/agent/internal/strategy"
 )
 
 const (
@@ -39,6 +40,9 @@ func main() {
 			return
 		case "optimize":
 			runOptimizeMode()
+			return
+		case "catalog":
+			runCatalogMode()
 			return
 		}
 	}
@@ -318,6 +322,53 @@ func runDatasetMode() {
 	}
 
 	log.Printf("dataset:\n%s", string(out))
+}
+
+func runCatalogMode() {
+	fs := flag.NewFlagSet("catalog", flag.ContinueOnError)
+	outPath := fs.String("out", "", "optional output path for JSON catalog")
+	pretty := fs.Bool("pretty", true, "pretty-print JSON output")
+	format := fs.String("format", "json", "output format (json)")
+	fs.Usage = func() {
+		log.Printf("Usage: agent catalog [--format json] [--out <file>]")
+	}
+	if err := fs.Parse(os.Args[2:]); err != nil {
+		log.Fatalf("catalog flags: %v", err)
+	}
+
+	switch strings.ToLower(strings.TrimSpace(*format)) {
+	case "", "json":
+	default:
+		log.Fatalf("catalog format %q is not supported", *format)
+	}
+
+	catalog := strategy.BuildOperatorCatalog()
+	var out []byte
+	var err error
+	if *pretty {
+		out, err = json.MarshalIndent(catalog, "", "  ")
+	} else {
+		out, err = json.Marshal(catalog)
+	}
+	if err != nil {
+		log.Fatalf("marshal catalog: %v", err)
+	}
+
+	if *outPath != "" {
+		dir := filepath.Dir(*outPath)
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			log.Fatalf("mkdir output directory: %v", err)
+		}
+		if err := os.WriteFile(*outPath, out, 0o644); err != nil {
+			log.Fatalf("write catalog: %v", err)
+		}
+		log.Printf("catalog written to %s", *outPath)
+		return
+	}
+
+	if _, err := os.Stdout.Write(append(out, '\n')); err != nil {
+		log.Fatalf("write catalog: %v", err)
+	}
 }
 
 func parseStrategyNames(csv string) []string {

@@ -92,8 +92,23 @@ func loadCorpus(path string, visited map[string]struct{}) ([]store.Device, error
 	devices = append(devices, envelope.ScanDevices...)
 	devices = append(devices, envelope.ResultDevices...)
 
+	existing := make(map[string]struct{}, len(devices))
+	for _, d := range devices {
+		key := strings.ToLower(strings.TrimSpace(fallbackID(d.MAC, d.IP)))
+		if key != "" {
+			existing[key] = struct{}{}
+		}
+		if id := strings.ToLower(strings.TrimSpace(d.ID)); id != "" && id != "unknown" {
+			existing[id] = struct{}{}
+		}
+	}
+
 	for _, t := range collectTargetSummaries(envelope) {
 		if strings.TrimSpace(t.IP) == "" {
+			continue
+		}
+		key := strings.ToLower(strings.TrimSpace(fallbackID(t.MAC, t.IP)))
+		if _, ok := existing[key]; ok {
 			continue
 		}
 		h := t.Hostname
@@ -115,6 +130,7 @@ func loadCorpus(path string, visited map[string]struct{}) ([]store.Device, error
 		device.Observations = synthesizeObservationsFromSummary(t)
 		device.SourcesSeen = synthesizeSourcesFromSummary(t)
 		devices = append(devices, device)
+		existing[key] = struct{}{}
 	}
 
 	for _, chunkPath := range envelope.ChunkFiles {

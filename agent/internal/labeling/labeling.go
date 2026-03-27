@@ -577,6 +577,8 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 			if lowerK == "ports" {
 				for _, p := range splitCSV(lowerV) {
 					switch p {
+					case "554":
+						add("camera", 0.55, "port:"+p, sig.Tier)
 					case "7000":
 						add("tv", 1.45, "port:"+p, sig.Tier)
 					case "8008", "8009":
