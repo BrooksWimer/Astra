@@ -1,6 +1,10 @@
 package strategy
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/netwise/agent/internal/mdns"
+)
 
 type MdnsActive struct{}
 
@@ -20,8 +24,8 @@ func collectMDNS(strategyName, mode string, targets []Target, emit ObservationSi
 				continue
 			}
 			emitObservation(emit, strategyName, t, "mdns_status", "not_seen", map[string]string{
-				"mode":           mode,
-				"target_ip":      t.IP,
+				"mode":            mode,
+				"target_ip":       t.IP,
 				"target_hostname": t.Hostname,
 			})
 			emitObservation(emit, strategyName, t, "mdns_observation_mode", mode, map[string]string{
@@ -35,67 +39,93 @@ func collectMDNS(strategyName, mode string, targets []Target, emit ObservationSi
 		if t.IP == "" && t.Hostname == "" {
 			continue
 		}
-		matched := false
+		matchedEntries := make([]mdnsObservation, 0, len(entries))
 		for _, entry := range entries {
+			matched, matchReason := mdnsEntryMatchesTarget(entry, t)
+			if !matched {
+				continue
+			}
+			matchedEntries = append(matchedEntries, mdnsObservation{entry: entry, matchReason: matchReason})
+		}
+		if len(matchedEntries) == 0 {
+			emitObservation(emit, strategyName, t, "mdns_status", "not_seen", map[string]string{
+				"mode":            mode,
+				"target_ip":       t.IP,
+				"target_hostname": t.Hostname,
+			})
+			continue
+		}
+		for _, observed := range matchedEntries {
+			entry := observed.entry
 			family := mdnsServiceFamily(entry.Service, entry.Instance)
-			match := "false"
-			if t.IP != "" && strings.EqualFold(entry.IP, t.IP) {
-				match = "true"
-			}
-			if t.Hostname != "" && strings.EqualFold(entry.Hostname, t.Hostname) {
-				match = "true"
-			}
-			if match == "true" {
-				matched = true
-			}
 			emitObservation(emit, strategyName, t, "mdns_status", "observed", map[string]string{
 				"mode":            mode,
 				"target_ip":       t.IP,
 				"target_hostname": t.Hostname,
 				"entry_ip":        entry.IP,
+				"match_reason":    observed.matchReason,
 			})
 			emitObservation(emit, strategyName, t, "mdns_observation_mode", mode, map[string]string{
-				"service": entry.Service,
-				"instance": entry.Instance,
+				"service":      entry.Service,
+				"instance":     entry.Instance,
+				"match_reason": observed.matchReason,
 			})
 			emitObservation(emit, strategyName, t, "mdns_service", entry.Service, map[string]string{
-				"instance": entry.Instance,
-				"hostname": entry.Hostname,
-				"ip":       entry.IP,
+				"instance":     entry.Instance,
+				"hostname":     entry.Hostname,
+				"ip":           entry.IP,
+				"match_reason": observed.matchReason,
 			})
 			emitObservation(emit, strategyName, t, "mdns_service_family", family, map[string]string{
-				"service":  entry.Service,
-				"instance": entry.Instance,
+				"service":      entry.Service,
+				"instance":     entry.Instance,
+				"match_reason": observed.matchReason,
 			})
 			emitObservation(emit, strategyName, t, "mdns_instance", entry.Instance, map[string]string{
-				"service":  entry.Service,
-				"hostname": entry.Hostname,
-				"ip":       entry.IP,
+				"service":      entry.Service,
+				"hostname":     entry.Hostname,
+				"ip":           entry.IP,
+				"match_reason": observed.matchReason,
 			})
 			emitObservation(emit, strategyName, t, "mdns_hostname", entry.Hostname, map[string]string{
-				"service":  entry.Service,
-				"instance": entry.Instance,
-				"ip":       entry.IP,
+				"service":      entry.Service,
+				"instance":     entry.Instance,
+				"ip":           entry.IP,
+				"match_reason": observed.matchReason,
 			})
 			emitObservation(emit, strategyName, t, "mdns_ip", entry.IP, map[string]string{
-				"service":  entry.Service,
-				"instance": entry.Instance,
-				"hostname": entry.Hostname,
+				"service":      entry.Service,
+				"instance":     entry.Instance,
+				"hostname":     entry.Hostname,
+				"match_reason": observed.matchReason,
 			})
-			emitObservation(emit, strategyName, t, "mdns_target_match", match, map[string]string{
-				"service":  entry.Service,
-				"instance": entry.Instance,
-				"hostname": entry.Hostname,
-			})
-		}
-		if !matched {
-			emitObservation(emit, strategyName, t, "mdns_status", "not_seen", map[string]string{
-				"mode":           mode,
-				"target_ip":      t.IP,
-				"target_hostname": t.Hostname,
+			emitObservation(emit, strategyName, t, "mdns_target_match", "true", map[string]string{
+				"service":      entry.Service,
+				"instance":     entry.Instance,
+				"hostname":     entry.Hostname,
+				"match_reason": observed.matchReason,
 			})
 		}
 	}
+}
+
+type mdnsObservation struct {
+	entry       mdns.Entry
+	matchReason string
+}
+
+func mdnsEntryMatchesTarget(entry mdns.Entry, target Target) (bool, string) {
+	targetIP := strings.TrimSpace(strings.ToLower(target.IP))
+	entryIP := strings.TrimSpace(strings.ToLower(entry.IP))
+	if targetIP != "" && entryIP != "" && targetIP == entryIP {
+		return true, "entry_ip"
+	}
+	targetHostname := normalizeTargetHost(target.Hostname)
+	entryHostname := normalizeTargetHost(entry.Hostname)
+	if targetHostname != "" && entryHostname != "" && targetHostname == entryHostname {
+		return true, "hostname"
+	}
+	return false, ""
 }
 
 func mdnsServiceFamily(service, instance string) string {
