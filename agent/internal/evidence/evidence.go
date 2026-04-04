@@ -508,8 +508,11 @@ func resolveFamily(strategy string, key string, value string, details map[string
 	detailsJoined := strings.ToLower(strings.Join(sortedDetailPairs(details), " "))
 
 	switch s {
-	case "arp_active_refresh", "arp_neighbor", "mac_oui_and_localadmin", "netbios_llmnr_passive":
+	case "arp_active_refresh", "arp_neighbor", "mac_oui_and_localadmin":
 		return FamilyIdentity, TierWeak
+	case "netbios_llmnr_passive", "llmnr_responder_analysis":
+		// NetBIOS machine name and LLMNR query name are real identity signals, not just port observations
+		return FamilyIdentity, TierMedium
 	case "dhcpv4_options", "dhcpv6_duid", "static_ip_lease", "lease_match":
 		if k == "duid" || strings.Contains(v, "duid") {
 			return FamilyDHCP, TierStrong
@@ -567,7 +570,7 @@ func resolveFamily(strategy string, key string, value string, details map[string
 		return FamilyCorrelation, TierContextual
 	case "radius_8021x_identity", "snmp_system_identity":
 		return FamilySNMP, TierStrong
-	case "snmp_trap_event_pull", "smb_info_probe", "switch_controller_telemetry", "voip_telemetry_probe", "rdp_service_probe", "media_device_probe", "printer_probe", "camera_probe":
+	case "snmp_trap_event_pull", "smb_info_probe", "switch_controller_telemetry", "voip_telemetry_probe", "rdp_service_probe", "media_device_probe", "media_device_quick_probe", "printer_probe", "camera_probe":
 		return FamilySecurityOps, TierMedium
 	default:
 		switch {

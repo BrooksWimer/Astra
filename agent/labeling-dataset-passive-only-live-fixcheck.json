@@ -1,0 +1,1221 @@
+{
+  "generated_at": "2026-03-23T23:42:35.4101653Z",
+  "source": "corpus",
+  "corpus_inputs": [
+    "C:\\Users\\wimer\\Desktop\\Sentry\\netwise\\agent\\experiment-passive-only-live-fixcheck.json"
+  ],
+  "device_count": 18,
+  "observation_status_counts": {
+    "no_response": 146,
+    "not_applicable": 32,
+    "real_data": 231,
+    "unsupported": 198
+  },
+  "feature_vectors": [
+    {
+      "device_key": "8c:e7:48:43:e3:1e",
+      "device_id": "8c:e7:48:43:e3:1e",
+      "ip": "192.168.4.20",
+      "mac": "8c:e7:48:43:e3:1e",
+      "hostname": "SWANN 192.168.4.20",
+      "resolved_label": "camera",
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429,
+      "confidence_band": "confirm",
+      "candidate_labels": [
+        {
+          "label": "camera",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+            "vendor/hostname: camera-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        }
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "ssdp",
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995224415291792
+    },
+    {
+      "device_key": "ae:71:8a:0b:80:59",
+      "device_id": "ae:71:8a:0b:80:59",
+      "ip": "192.168.4.21",
+      "mac": "ae:71:8a:0b:80:59",
+      "hostname": "MacBook-Pro-167.local",
+      "resolved_label": "laptop",
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429,
+      "confidence_band": "confirm",
+      "candidate_labels": [
+        {
+          "label": "laptop",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "mDNS: _raop._tcp (AirPlay)",
+            "vendor/hostname: laptop-like",
+            "vendor/hostname: workstation-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        }
+      ],
+      "observation_count": 39,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 18,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 18,
+      "sources_seen": [
+        "arp",
+        "mdns"
+      ],
+      "evidence_family_counts": {
+        "identity": 13,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 8
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_mac": 1,
+        "netbios_llmnr_passive|netbios_name": 1,
+        "netbios_llmnr_passive|netbios_record_type": 1,
+        "netbios_llmnr_passive|netbios_role": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 1,
+        "netbios_llmnr_passive|netbios_status_detail": 1,
+        "netbios_llmnr_passive|netbios_suffix": 1
+      },
+      "temporal_bins": {
+        "fresh_5m": 15
+      },
+      "hit_frequency": 0.18074466803229305,
+      "stale_signal_score": 0.9994555888021581
+    },
+    {
+      "device_key": "c8:c6:fe:07:fe:92",
+      "device_id": "c8:c6:fe:07:fe:92",
+      "ip": "192.168.4.1",
+      "mac": "c8:c6:fe:07:fe:92",
+      "hostname": "eero",
+      "resolved_label": "router",
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429,
+      "confidence_band": "confirm",
+      "candidate_labels": [
+        {
+          "label": "router",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP: urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP server header: eeroOS/latest UPnP/1.0 eero/latest",
+            "vendor/hostname: mesh-router-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        }
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "ssdp",
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049644535486204,
+      "stale_signal_score": 0.9994829180336182
+    },
+    {
+      "device_key": "00:e0:4c:40:15:c4",
+      "device_id": "00:e0:4c:40:15:c4",
+      "ip": "192.168.4.251",
+      "mac": "00:e0:4c:40:15:c4",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995856275144543
+    },
+    {
+      "device_key": "2a:fe:31:f6:99:53",
+      "device_id": "2a:fe:31:f6:99:53",
+      "ip": "192.168.4.155",
+      "mac": "2a:fe:31:f6:99:53",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995145140633557
+    },
+    {
+      "device_key": "2c:9e:00:95:33:bb",
+      "device_id": "2c:9e:00:95:33:bb",
+      "ip": "192.168.4.239",
+      "mac": "2c:9e:00:95:33:bb",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995619179810651
+    },
+    {
+      "device_key": "2e:89:cb:b3:d2:e3",
+      "device_id": "2e:89:cb:b3:d2:e3",
+      "ip": "192.168.4.23",
+      "mac": "2e:89:cb:b3:d2:e3",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049644535486204,
+      "stale_signal_score": 0.9994908286597489
+    },
+    {
+      "device_key": "46:92:be:fb:66:91",
+      "device_id": "46:92:be:fb:66:91",
+      "ip": "192.168.4.250",
+      "mac": "46:92:be:fb:66:91",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 29,
+      "observation_status_counts": {
+        "no_response": 9,
+        "real_data": 9,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 9,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 4,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 6
+      },
+      "hit_frequency": 0.07229438272646216,
+      "stale_signal_score": 0.9997554045915676
+    },
+    {
+      "device_key": "68:5e:dd:84:9a:ae",
+      "device_id": "68:5e:dd:84:9a:ae",
+      "ip": "192.168.4.255",
+      "mac": "68:5e:dd:84:9a:ae",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049644535486204,
+      "stale_signal_score": 0.9994749210570306
+    },
+    {
+      "device_key": "6e:cc:11:51:a4:e0",
+      "device_id": "6e:cc:11:51:a4:e0",
+      "ip": "192.168.4.222",
+      "mac": "6e:cc:11:51:a4:e0",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049644535486204,
+      "stale_signal_score": 0.9995066210383623
+    },
+    {
+      "device_key": "74:e2:0c:14:32:51",
+      "device_id": "74:e2:0c:14:32:51",
+      "ip": "192.168.4.196",
+      "mac": "74:e2:0c:14:32:51",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049644535486204,
+      "stale_signal_score": 0.9994987245478294
+    },
+    {
+      "device_key": "98:77:d5:3f:b7:60",
+      "device_id": "98:77:d5:3f:b7:60",
+      "ip": "192.168.4.233",
+      "mac": "98:77:d5:3f:b7:60",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995776995644133
+    },
+    {
+      "device_key": "9c:67:d6:70:2e:2a",
+      "device_id": "9c:67:d6:70:2e:2a",
+      "ip": "192.168.4.225",
+      "mac": "9c:67:d6:70:2e:2a",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995698118827392
+    },
+    {
+      "device_key": "b4:20:46:58:21:2d",
+      "device_id": "b4:20:46:58:21:2d",
+      "ip": "192.168.4.27",
+      "mac": "b4:20:46:58:21:2d",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995303028709962
+    },
+    {
+      "device_key": "b4:20:46:6e:02:0d",
+      "device_id": "b4:20:46:6e:02:0d",
+      "ip": "192.168.4.210",
+      "mac": "b4:20:46:6e:02:0d",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995382082153432
+    },
+    {
+      "device_key": "c6:f6:a4:61:51:da",
+      "device_id": "c6:f6:a4:61:51:da",
+      "ip": "192.168.4.254",
+      "mac": "c6:f6:a4:61:51:da",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049644535486204,
+      "stale_signal_score": 0.9994670538254671
+    },
+    {
+      "device_key": "ec:c9:ff:05:fc:44",
+      "device_id": "ec:c9:ff:05:fc:44",
+      "ip": "192.168.4.189",
+      "mac": "ec:c9:ff:05:fc:44",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "sources_seen": [
+        "arp"
+      ],
+      "evidence_family_counts": {
+        "identity": 8,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "arp_neighbor": 4,
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "arp_neighbor|neighbor_age": 1,
+        "arp_neighbor|neighbor_interface": 1,
+        "arp_neighbor|neighbor_mac": 1,
+        "arp_neighbor|neighbor_type": 1,
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 10
+      },
+      "hit_frequency": 0.12049063787743693,
+      "stale_signal_score": 0.9995540071046772
+    },
+    {
+      "device_key": "host:brooks",
+      "device_id": "ip_192.168.4.253",
+      "ip": "192.168.4.253",
+      "mac": "",
+      "hostname": "Brooks.local",
+      "resolved_label": "unknown",
+      "confidence": 0,
+      "calibrated_confidence": 0,
+      "confidence_band": "unknown",
+      "conflict_flags": [
+        "no_signal",
+        "low_confidence"
+      ],
+      "observation_count": 29,
+      "observation_status_counts": {
+        "no_response": 9,
+        "real_data": 9,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 9,
+      "sources_seen": [
+        "mdns"
+      ],
+      "evidence_family_counts": {
+        "identity": 4,
+        "topology": 2
+      },
+      "strategy_counts": {
+        "cdp_control": 1,
+        "lldp_neighbors": 1,
+        "mac_oui_and_localadmin": 1,
+        "netbios_llmnr_passive": 3
+      },
+      "signal_counts": {
+        "cdp_control|cdp_status": 1,
+        "lldp_neighbors|lldp_status": 1,
+        "mac_oui_and_localadmin|vendor": 1,
+        "netbios_llmnr_passive|netbios_source": 1,
+        "netbios_llmnr_passive|netbios_status": 2
+      },
+      "temporal_bins": {
+        "fresh_5m": 6
+      },
+      "hit_frequency": 0.07229438272646216,
+      "stale_signal_score": 0.9996676811623679
+    }
+  ],
+  "active_learning": [
+    {
+      "device_key": "00:e0:4c:40:15:c4",
+      "device_id": "00:e0:4c:40:15:c4",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "2a:fe:31:f6:99:53",
+      "device_id": "2a:fe:31:f6:99:53",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "2c:9e:00:95:33:bb",
+      "device_id": "2c:9e:00:95:33:bb",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "2e:89:cb:b3:d2:e3",
+      "device_id": "2e:89:cb:b3:d2:e3",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "46:92:be:fb:66:91",
+      "device_id": "46:92:be:fb:66:91",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "68:5e:dd:84:9a:ae",
+      "device_id": "68:5e:dd:84:9a:ae",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "6e:cc:11:51:a4:e0",
+      "device_id": "6e:cc:11:51:a4:e0",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "74:e2:0c:14:32:51",
+      "device_id": "74:e2:0c:14:32:51",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "98:77:d5:3f:b7:60",
+      "device_id": "98:77:d5:3f:b7:60",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "9c:67:d6:70:2e:2a",
+      "device_id": "9c:67:d6:70:2e:2a",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "b4:20:46:58:21:2d",
+      "device_id": "b4:20:46:58:21:2d",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "b4:20:46:6e:02:0d",
+      "device_id": "b4:20:46:6e:02:0d",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "c6:f6:a4:61:51:da",
+      "device_id": "c6:f6:a4:61:51:da",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "ec:c9:ff:05:fc:44",
+      "device_id": "ec:c9:ff:05:fc:44",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "host:brooks",
+      "device_id": "ip_192.168.4.253",
+      "resolved_label": "unknown",
+      "entropy": 0,
+      "conflict_count": 2,
+      "expected_gain": 0.95,
+      "unknown": true
+    },
+    {
+      "device_key": "8c:e7:48:43:e3:1e",
+      "device_id": "8c:e7:48:43:e3:1e",
+      "resolved_label": "camera",
+      "entropy": 0,
+      "conflict_count": 0,
+      "expected_gain": 0.25,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "camera",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+            "vendor/hostname: camera-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: camera",
+        "level=mid",
+        "camera: SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+        "camera: vendor/hostname: camera-like"
+      ]
+    },
+    {
+      "device_key": "ae:71:8a:0b:80:59",
+      "device_id": "ae:71:8a:0b:80:59",
+      "resolved_label": "laptop",
+      "entropy": 0,
+      "conflict_count": 0,
+      "expected_gain": 0.25,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "laptop",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "mDNS: _raop._tcp (AirPlay)",
+            "vendor/hostname: laptop-like",
+            "vendor/hostname: workstation-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: laptop",
+        "level=mid",
+        "laptop: mDNS: _raop._tcp (AirPlay)",
+        "laptop: vendor/hostname: laptop-like",
+        "laptop: vendor/hostname: workstation-like"
+      ]
+    },
+    {
+      "device_key": "c8:c6:fe:07:fe:92",
+      "device_id": "c8:c6:fe:07:fe:92",
+      "resolved_label": "router",
+      "entropy": 0,
+      "conflict_count": 0,
+      "expected_gain": 0.25,
+      "unknown": false,
+      "candidate_labels": [
+        {
+          "label": "router",
+          "score": 1,
+          "confidence": 0.5571428571428572,
+          "evidence": [
+            "SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP: urn:schemas-upnp-org:device:wandevice:1",
+            "SSDP server header: eeroOS/latest UPnP/1.0 eero/latest",
+            "vendor/hostname: mesh-router-like"
+          ],
+          "support_tiers": {
+            "medium": 1,
+            "strong": 1
+          }
+        }
+      ],
+      "reason_chain": [
+        "hybrid top candidate: router",
+        "level=mid",
+        "router: SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+        "router: SSDP: urn:schemas-upnp-org:device:wandevice:1",
+        "router: SSDP server header: eeroOS/latest UPnP/1.0 eero/latest"
+      ]
+    }
+  ]
+}

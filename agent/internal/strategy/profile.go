@@ -266,8 +266,8 @@ var strategyAuditOverrides = map[string]StrategyAudit{
 		SpeedCost:      SpeedLow,
 		DiscoveryValue: 3,
 		LabelingValue:  4,
-		Recommendation: TierSecondWave,
-		Notes:          "High upside for media and printer classes, but attribution quality is sensitive.",
+		Recommendation: TierFastPath,
+		Notes:          "High upside for media, printer, phone, and laptop labeling. Reads from pre-seeded cache so strategy-phase cost is negligible. Moved to fast_path after live benchmarks showed it hits all targets with high observation yield at near-zero extra cost.",
 	},
 	"mdns_passive": {
 		ExecutionClass: ExecutionPassive,
@@ -631,11 +631,13 @@ func StrategyProfiles() []StrategyProfile {
 		},
 		{
 			Name:        "label_core",
-			Description: "Run a stripped-down label-focused strategy set derived from the scoped-v3 labeled devices, while leaving discovery and the full scan path intact.",
+			Description: "Focused label profile covering the most valuable fast-path strategies: ARP identity, vendor OUI, mDNS service browsing, NetBIOS passive naming, SSDP/UPnP device description, media port probing, and operator overrides.",
 			StrategyNames: []string{
 				"arp_neighbor",
 				"arp_active_refresh",
 				"mac_oui_and_localadmin",
+				"mdns_active",
+				"netbios_llmnr_passive",
 				"ssdp_active",
 				"upnp_description_fetch",
 				"media_device_quick_probe",

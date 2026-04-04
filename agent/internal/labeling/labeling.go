@@ -521,6 +521,18 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 		c.SupportTiers[string(tier)]++
 	}
 
+	// Pre-scan: detect whether the full media_device_probe is present for this device.
+	// When only media_device_quick_probe is present (label-core / context scans),
+	// the quick probe acts as the authoritative signal and should use full scores.
+	// When both probes run together, quick_probe uses reduced scores to prevent stacking.
+	hasFullMediaProbe := false
+	for _, s := range profile.Signals {
+		if strings.ToLower(s.Strategy) == "media_device_probe" {
+			hasFullMediaProbe = true
+			break
+		}
+	}
+
 	for _, sig := range profile.Signals {
 		lowerV := strings.ToLower(sig.CanonicalValue)
 		lowerK := strings.ToLower(sig.Key)
@@ -540,22 +552,132 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 			if containsAny(lowerV, "hap", "homekit", "home-assistant", "hass") {
 				add("iot", 0.5, "mdns_service:"+lowerV, sig.Tier)
 			}
+			// Apple mobile device services — highly specific to iPhone/iPad
+			if containsAny(lowerV, "_companion-link", "_apple-mobdev", "_apple-mobdev2", "_apple-pairable") {
+				add("phone", 1.05, "mdns_service:"+lowerV, sig.Tier)
+			}
+			// macOS file and remote-access services — laptops and desktops
+			if containsAny(lowerV, "_afpovertcp", "_rfb.", "_sftp-ssh", "_smb.", "_device-info._tcp") {
+				add("laptop", 0.65, "mdns_service:"+lowerV, sig.Tier)
+			}
+			// Smart speaker and Amazon Echo services
+			if containsAny(lowerV, "_amzn-wplay", "_amazon", "amazon echo", "_googlezone", "google-cast-group") {
+				add("iot", 0.75, "mdns_service:"+lowerV, sig.Tier)
+			}
+			// Spotify Connect on speakers/TVs
+			if containsAny(lowerV, "_spotify-connect") {
+				add("iot", 0.65, "mdns_service:"+lowerV, sig.Tier)
+			}
+			// SSH service via mDNS is a strong laptop/NAS signal
+			if containsAny(lowerV, "_ssh._tcp") && lowerK == "mdns_service" {
+				add("laptop", 0.55, "mdns_service:"+lowerV, sig.Tier)
+			}
+			// Instance and hostname name matching: device names often reveal type
+			if lowerK == "mdns_instance" || lowerK == "mdns_hostname" {
+				if containsAny(lowerV, "iphone", "ipad") {
+					add("phone", 0.85, lowerK+":"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "macbook", "mac mini", "imac", "mac pro") {
+					add("laptop", 0.85, lowerK+":"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "galaxy", "pixel ", "android") {
+					add("phone", 0.70, lowerK+":"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "synology", "qnap", "readynas", "diskstation", "nas") {
+					add("iot", 0.75, lowerK+":"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "apple tv", "appletv") {
+					add("tv", 0.90, lowerK+":"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "raspberry pi") {
+					add("iot", 0.80, lowerK+":"+lowerV, sig.Tier)
+				}
+				// Gaming console hostnames/instance names are very distinctive
+				if containsAny(lowerV, "ps5-", "ps4-", "playstation", "xbox-", "nintendo switch", "steamdeck") {
+					add("iot", 0.85, lowerK+":"+lowerV, sig.Tier)
+				}
+				// Smart speaker / Echo hostname patterns
+				if containsAny(lowerV, "echo-", "alexa-", "amazon-echo", "amazon echo") {
+					add("iot", 0.85, lowerK+":"+lowerV, sig.Tier)
+				}
+				// Chromecast / Roku / streaming device names
+				if containsAny(lowerV, "chromecast", "google-cast", "roku-", "fire-tv", "firetv", "androidtv") {
+					add("tv", 0.85, lowerK+":"+lowerV, sig.Tier)
+				}
+				// Windows PC hostnames: often desktop-PC, laptop, or DESKTOP-XXXXXX patterns
+				if containsAny(lowerV, "desktop-", "laptop-", "win-", "windows-") {
+					add("laptop", 0.65, lowerK+":"+lowerV, sig.Tier)
+				}
+			}
 		case lowerS == "ssdp_active" || lowerS == "ssdp_passive":
+			// Skip synthetic metadata keys produced by the scanner itself.
+			// ssdp_service_family is a derived category label (not a raw SSDP field) and
+			// lacks source-IP attribution — using it causes false positives from cross-device
+			// contamination. ssdp_st/ssdp_server/ssdp_usn carry the actual service identity
+			// and are protected by extractLocationHost IP filtering in observationEligibleForLabeling.
+			if lowerK == "ssdp_service_family" || lowerK == "ssdp_observation_mode" ||
+				lowerK == "ssdp_status" || lowerK == "ssdp_target_match" {
+				break
+			}
 			if containsAny(lowerV, "internetgatewaydevice", "wan", "gateway", "router") {
 				add("router", 1.0, "ssdp:"+lowerV, sig.Tier)
 			}
 			if containsAny(lowerV, "upnp:rootdevice") && likelyGatewayIP(d.IP) {
 				add("router", 0.95, "ssdp_rootdevice_gateway_ip:"+d.IP, sig.Tier)
 			}
-			if containsAny(lowerV, "mediarenderer", "renderingcontrol", "basicdevice", "dlna") {
-				add("tv", 0.85, "ssdp:"+lowerV, sig.Tier)
+			// MediaRenderer is a UPnP device type shared by TVs, AV receivers, AND speakers.
+			// RenderingControl/GroupRenderingControl are UPnP *service* types shared by all
+			// UPnP AV devices — too generic to mean tv. Only score device-level identifiers.
+			if containsAny(lowerV, "mediarenderer", "dlna") {
+				add("tv", 0.55, "ssdp:"+lowerV, sig.Tier)
+			}
+			// Sonos-specific: ZonePlayer device type and schemas-sonos-com service namespace
+			if containsAny(lowerV, "zoneplayer", "schemas-sonos-com") {
+				add("iot", 1.5, "ssdp:"+lowerV, sig.Tier)
 			}
 			if containsAny(lowerV, "printer", "ipp", "pdl") {
 				add("printer", 0.9, "ssdp:"+lowerV, sig.Tier)
 			}
+			// SSDP server field often contains device OS/brand — use it for brand hints
+			if lowerK == "ssdp_server" {
+				if containsAny(lowerV, "sonos") {
+					add("iot", 2.0, "ssdp_server:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "hikvision", "dahua", "swann", "reolink", "amcrest", "axis") {
+					add("camera", 0.75, "ssdp_server:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "eero", "netgear", "tplink", "tp-link", "ubiquiti", "mikrotik", "arris", "cisco") {
+					add("router", 0.65, "ssdp_server:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "samsung", "lg ", "sony", "vizio", "hisense", "panasonic", "tcl") {
+					add("tv", 0.60, "ssdp_server:"+lowerV, sig.Tier)
+				}
+			}
 		case strings.HasPrefix(lowerS, "upnp"):
 			if containsAny(lowerV, "camera", "cam", "ipcam", "nvr") {
 				add("camera", 1.0, "upnp:"+lowerV, sig.Tier)
+			}
+			// DVR/NVR model names and common DVR device type strings
+			if containsAny(lowerV, "dvr", "cctv", "surveillance", "embeddednetdevice") && lowerK != "upnp_location" {
+				add("camera", 0.85, "upnp:"+lowerV, sig.Tier)
+			}
+			// Camera brand manufacturers surfaced via UPnP description
+			if lowerK == "upnp_manufacturer" || lowerK == "upnp_model_name" || lowerK == "upnp_friendly_name" {
+				if containsAny(lowerV, "swann", "hikvision", "dahua", "reolink", "amcrest", "lorex", "axis", "foscam", "annke", "hanwha", "vivotek", "bosch security", "uniview", "wisenet") {
+					add("camera", 0.95, "upnp_brand:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "epson", "canon", "hp", "brother", "xerox", "ricoh", "kyocera", "lexmark", "konica", "sharp") {
+					add("printer", 0.85, "upnp_brand:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "netgear", "tp-link", "tplink", "asus", "ubiquiti", "mikrotik", "cisco", "linksys", "eero", "orbi") {
+					add("router", 0.80, "upnp_brand:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "sonos") {
+					add("iot", 2.0, "upnp_brand:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "samsung", "lg", "sony", "vizio", "philips", "hisense", "tcl", "panasonic") {
+					add("tv", 0.75, "upnp_brand:"+lowerV, sig.Tier)
+				}
 			}
 			if containsAny(lowerV, "internetgatewaydevice", "gateway", "router") {
 				add("router", 0.9, "upnp:"+lowerV, sig.Tier)
@@ -563,8 +685,35 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 			if containsAny(lowerV, "printer", "ipps", "airprint") {
 				add("printer", 0.9, "upnp:"+lowerV, sig.Tier)
 			}
+		case lowerS == "firewall_traffic_profile":
+			// firewall_traffic_profile reads from local firewall/router connection logs.
+			// firewall_ssh_status=real_data is a confirmed active SSH connection — strong laptop/server signal.
+			if lowerK == "firewall_ssh_status" && lowerV == "real_data" {
+				add("laptop", 0.85, "firewall:ssh_active", sig.Tier)
+			}
+			if lowerK == "firewall_ssh_banner" && lowerV != "" && lowerV != "unavailable" && lowerV != "no_data" {
+				add("laptop", 0.60, "firewall:ssh_banner", sig.Tier)
+				if containsAny(lowerV, "openssh") {
+					add("laptop", 0.40, "firewall:openssh", sig.Tier)
+				}
+				if containsAny(lowerV, "dropbear") {
+					add("iot", 0.45, "firewall:dropbear", sig.Tier)
+				}
+				if containsAny(lowerV, "cisco", "ios", "nexus", "junos") {
+					add("router", 0.65, "firewall:"+lowerV, sig.Tier)
+				}
+			}
 		case lowerS == "http_header_probe" || lowerS == "passive_http_metadata" || lowerS == "http_api_probe" || lowerS == "home_api_probe":
-			if containsAny(lowerV, "server", "cisco", "printer", "ipps") {
+			// Router/gateway detection from HTTP banners — must run before
+			// the generic "server" keyword match to prevent routers being
+			// misclassified as printers.
+			if containsAny(lowerV, "router", "gateway", "xfinity", "comcast", "netgear", "tp-link", "tplink", "asus", "linksys", "eero", "arris", "ubiquiti", "mikrotik", "broadband router") {
+				score := 0.85
+				if likelyGatewayIP(d.IP) {
+					score = 1.1
+				}
+				add("router", score, "http:"+lowerV, sig.Tier)
+			} else if containsAny(lowerV, "server", "cisco", "printer", "ipps") {
 				add("printer", 0.45, "http:"+lowerV, sig.Tier)
 			}
 			if containsAny(lowerV, "airplay", "chromecast", "plex", "sonos", "homekit") {
@@ -574,35 +723,109 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 				add("camera", 0.35, "http:"+lowerV, sig.Tier)
 			}
 		case lowerS == "media_device_probe" || lowerS == "media_device_quick_probe":
+			// media_device_probe is the authoritative full AirPlay/media probe.
+			// media_device_quick_probe is a lighter pre-scan that often runs alongside probe,
+			// producing the same port/banner evidence. To prevent double-counting from
+			// stacking tv confidence past clear device identifiers (e.g. MacBook-Pro NetBIOS),
+			// quick_probe uses intentionally reduced scores as supplementary signals only.
+			// When the full probe is absent (label-core / context scans), quick_probe is
+			// authoritative and uses full scores.
+			isQuickProbe := lowerS == "media_device_quick_probe" && hasFullMediaProbe
 			if lowerK == "ports" {
 				for _, p := range splitCSV(lowerV) {
 					switch p {
 					case "554":
-						add("camera", 0.55, "port:"+p, sig.Tier)
+						if isQuickProbe {
+							add("camera", 0.20, "port:"+p, sig.Tier)
+						} else {
+							add("camera", 0.55, "port:"+p, sig.Tier)
+						}
 					case "7000":
-						add("tv", 1.45, "port:"+p, sig.Tier)
+						// Port 7000 is shared between Apple TV and macOS AirPlay receiver.
+						// NetBIOS name (MACBOOK-PRO-xxx) or mDNS _airplay._tcp provides disambiguation.
+						// quick_probe score is intentionally low to avoid overpowering hostname signals.
+						if isQuickProbe {
+							add("tv", 0.15, "port:"+p, sig.Tier)
+						} else {
+							add("tv", 0.85, "port:"+p, sig.Tier)
+						}
 					case "8008", "8009":
-						add("tv", 1.45, "port:"+p, sig.Tier)
+						if isQuickProbe {
+							add("tv", 0.30, "port:"+p, sig.Tier)
+						} else {
+							add("tv", 1.45, "port:"+p, sig.Tier)
+						}
 					case "8096":
-						add("tv", 0.55, "port:"+p, sig.Tier)
+						if isQuickProbe {
+							add("tv", 0.20, "port:"+p, sig.Tier)
+						} else {
+							add("tv", 0.55, "port:"+p, sig.Tier)
+						}
 					}
 				}
 				break
 			}
 			if lowerK == "udp_candidate_port" {
-				for _, p := range splitCSV(lowerV) {
-					switch p {
-					case "1900", "5000":
-						add("tv", 0.25, "port:"+p, sig.Tier)
+				// Port 1900 (SSDP/UPnP) is too generic for TV attribution —
+				// routers, printers, and IoT devices all respond on it.
+				// Rely on SSDP content analysis instead.
+				if !isQuickProbe {
+					for _, p := range splitCSV(lowerV) {
+						switch p {
+						case "5000":
+							add("tv", 0.25, "port:"+p, sig.Tier)
+						}
 					}
 				}
 				break
 			}
+			// RTSP response is a near-definitive camera/NVR signal
+			if lowerK == "rtsp_status" && lowerV == "real_data" {
+				if isQuickProbe {
+					add("camera", 0.50, "rtsp:active", sig.Tier)
+				} else {
+					add("camera", 1.2, "rtsp:active", sig.Tier)
+				}
+			}
+			if lowerK == "rtsp_realm" && lowerV != "" && lowerV != "none" && lowerV != "no_data" {
+				add("camera", 0.6, "rtsp:realm:"+lowerV, sig.Tier)
+			}
+			if lowerK == "rtsp_server" && lowerV != "" && lowerV != "none" && lowerV != "no_data" {
+				add("camera", 0.7, "rtsp:server:"+lowerV, sig.Tier)
+			}
+			// Sonos: dedicated probe field — definitive smart speaker identification
+			if lowerK == "sonos_status" && lowerV == "real_data" {
+				add("iot", 3.0, "sonos:speaker", sig.Tier)
+			}
+			// AirPlay/media banner signals — quick_probe uses reduced weight since probe already captures these
+			mediaBannerScore := 0.70
+			if isQuickProbe {
+				mediaBannerScore = 0.15
+			}
 			if containsAny(lowerV, "chromecast", "google cast", "google tv", "android tv", "google home", "nest hub", "nest mini", "bravia", "roku", "airplay", "airtunes", "appletv", "apple tv", "homepod", "raop", "jellyfin", "emby", "plex") {
-				add("tv", 1.0, "media:"+lowerV, sig.Tier)
+				add("tv", mediaBannerScore, "media:"+lowerV, sig.Tier)
 			}
 			if containsAny(lowerV, "camera", "nvr", "ipcam") {
-				add("camera", 0.55, "media:"+lowerV, sig.Tier)
+				add("camera", mediaBannerScore, "media:"+lowerV, sig.Tier)
+			}
+		case lowerS == "camera_probe":
+			// camera_probe actively tests RTSP, ONVIF, and HTTP camera endpoints
+			if (lowerK == "camera_rtsp_status" || lowerK == "rtsp_status") && lowerV == "real_data" {
+				add("camera", 1.4, "camera_probe:rtsp_active", sig.Tier)
+			}
+			if (lowerK == "camera_rtsp_realm" || lowerK == "rtsp_realm") && lowerV != "" && lowerV != "none" && lowerV != "no_data" {
+				add("camera", 0.7, "camera_probe:rtsp_realm:"+lowerV, sig.Tier)
+			}
+			if (lowerK == "camera_http_status" || lowerK == "http_status") && lowerV == "real_data" {
+				add("camera", 0.8, "camera_probe:http_active", sig.Tier)
+			}
+			if lowerK == "camera_onvif_status" && lowerV == "real_data" {
+				add("camera", 1.5, "camera_probe:onvif_active", sig.Tier)
+			}
+			if lowerK == "camera_brand" || lowerK == "camera_model" {
+				if containsAny(lowerV, "hikvision", "dahua", "swann", "axis", "reolink", "amcrest", "foscam", "hanwha", "uniview") {
+					add("camera", 1.0, "camera_probe:brand:"+lowerV, sig.Tier)
+				}
 			}
 		case lowerS == "tls_cert_probe" || lowerS == "passive_tls_handshake" || lowerK == "tls_subject" || lowerK == "tls_issuer" || lowerK == "tls_sans":
 			if containsAny(lowerV, "camera", "cctv", "hikvision", "axis") {
@@ -634,10 +857,89 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 				add("laptop", 0.45, "snmp:"+lowerV, sig.Tier)
 			}
 		case lowerS == "passive_ssh_banner" || lowerS == "ssh_banner_probe":
+			// An active SSH banner response is a strong laptop/server/NAS indicator
+			if lowerK == "ssh_banner" && lowerV != "" && lowerV != "no_data" && lowerV != "none" {
+				add("laptop", 0.85, "ssh:banner:"+lowerV, sig.Tier)
+			}
 			if containsAny(lowerV, "openssh") {
-				add("laptop", 0.3, "ssh:"+lowerV, sig.Tier)
+				add("laptop", 0.60, "ssh:"+lowerV, sig.Tier)
+			}
+			if containsAny(lowerV, "dropbear") {
+				// Dropbear is common on embedded Linux (routers, NAS, IoT devices)
+				add("iot", 0.55, "ssh:dropbear", sig.Tier)
+			}
+			if containsAny(lowerV, "cisco", "ios", "nexus", "junos") {
+				add("router", 0.75, "ssh:"+lowerV, sig.Tier)
+			}
+		case lowerS == "netbios_llmnr_passive":
+			// netbios_name carries the NetBIOS machine name — very useful for Windows and Mac identification
+			if lowerK == "netbios_name" && lowerV != "" && lowerV != "no_data" && lowerV != "none" {
+				if containsAny(lowerV, "macbook", "mac-mini", "mac-pro", "imac") {
+					// These machine names are definitive — score raised above any port/AirPlay
+					// inference stack to ensure MacBook-Pro NetBIOS always beats tv signals
+					// from the shared Apple AirPlay port (7000).
+					add("laptop", 2.5, "netbios:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "iphone", "ipad") {
+					add("phone", 0.75, "netbios:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "galaxy", "pixel", "android", "oneplus") {
+					add("phone", 0.65, "netbios:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "desktop-", "laptop-", "win-", "workstation") {
+					add("laptop", 0.65, "netbios:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "synology", "qnap", "nas", "diskstation", "readynas") {
+					add("iot", 0.65, "netbios:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "ps5-", "ps4-", "playstation", "xbox-") {
+					add("iot", 0.75, "netbios:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "echo-", "alexa-", "amazon-") {
+					add("iot", 0.75, "netbios:"+lowerV, sig.Tier)
+				}
+			}
+			// netbios_role gives the SMB workstation/server role
+			if lowerK == "netbios_role" {
+				switch lowerV {
+				case "workstation":
+					add("laptop", 0.30, "netbios_role:workstation", sig.Tier)
+				case "server", "domain_controller":
+					add("laptop", 0.40, "netbios_role:"+lowerV, sig.Tier)
+				}
+			}
+		case lowerS == "llmnr_responder_analysis":
+			// llmnr_query_name is the Windows machine name that issued the LLMNR query.
+			// LLMNR is primarily a Windows protocol — any query implies a Windows device.
+			if lowerK == "llmnr_query_name" && lowerV != "" && lowerV != "no_data" {
+				// Device sending LLMNR queries is almost certainly Windows
+				add("laptop", 0.35, "llmnr:"+lowerV, sig.Tier)
+				// Apply name patterns where applicable
+				if containsAny(lowerV, "desktop-", "laptop-", "win-", "workstation") {
+					add("laptop", 0.65, "llmnr:"+lowerV, sig.Tier)
+				}
+				if containsAny(lowerV, "macbook", "mac-mini", "mac-pro", "imac") {
+					add("laptop", 0.80, "llmnr:"+lowerV, sig.Tier)
+				}
 			}
 		case lowerS == "port_service_correlation" || lowerS == "tcp_connect_microset" || lowerK == "ports" || (lowerS == "media_device_quick_probe" && lowerK == "udp_candidate_port"):
+			// port_service_correlation emits service_family as a summary key — use it directly
+			if lowerK == "service_family" {
+				switch lowerV {
+				case "camera":
+					add("camera", 0.75, "service_family:"+lowerV, sig.Tier)
+				case "printer":
+					add("printer", 0.65, "service_family:"+lowerV, sig.Tier)
+				case "tv", "media":
+					add("tv", 0.65, "service_family:"+lowerV, sig.Tier)
+				case "router":
+					add("router", 0.60, "service_family:"+lowerV, sig.Tier)
+				case "ssh_admin", "ssh":
+					// SSH admin service strongly implies a Unix-like device (laptop, server, NAS)
+					add("laptop", 0.55, "service_family:"+lowerV, sig.Tier)
+				}
+				break
+			}
 			mediaProbe := lowerS == "media_device_probe"
 			for _, p := range splitCSV(lowerV) {
 				switch p {
@@ -647,12 +949,18 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 					add("printer", 0.35, "port:"+p, sig.Tier)
 				case "22", "3389":
 					add("laptop", 0.35, "port:"+p, sig.Tier)
-				case "1900", "5000":
+				case "1900":
+					// Port 1900 (SSDP/UPnP) is too generic for TV attribution —
+					// many routers, printers, and IoT devices listen on it.
+					// Rely on SSDP content analysis (ssdp_active/ssdp_passive) instead.
+				case "5000":
 					add("tv", 0.25, "port:"+p, sig.Tier)
 				case "7000":
-					score := 0.25
+					// Reduced: port 7000 is shared between Apple TV and macOS AirPlay receiver.
+					// NetBIOS name (MACBOOK-PRO-xxx) or mDNS _airplay._tcp provides disambiguation.
+					score := 0.20
 					if mediaProbe {
-						score = 1.45
+						score = 0.85
 					}
 					add("tv", score, "port:"+p, sig.Tier)
 				case "8008", "8009":
@@ -735,6 +1043,26 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 				if containsAny(lowerV, "cisco", "ubiquiti", "netgear", "tplink", "huawei", "asustek", "mikrotik") {
 					add("router", 0.22, "vendor:"+sig.CanonicalValue, evidence.TierWeak)
 				}
+				// Intel networking chips are almost exclusively in laptops and desktops
+				if containsAny(lowerV, "intel corporate", "intel(r) corporation") {
+					add("laptop", 0.30, "vendor:"+sig.CanonicalValue, evidence.TierWeak)
+				}
+				// Amazon devices: Kindle, Echo/Alexa, FireTV
+				if containsAny(lowerV, "amazon technologies", "amazon.com", "lab126") {
+					add("iot", 0.55, "vendor:"+sig.CanonicalValue, evidence.TierWeak)
+				}
+				// Espressif SoCs power most DIY and commercial IoT devices
+				if containsAny(lowerV, "espressif") {
+					add("iot", 0.65, "vendor:"+sig.CanonicalValue, evidence.TierWeak)
+				}
+				// Raspberry Pi — effectively always an IoT/server device on home networks
+				if containsAny(lowerV, "raspberry pi", "raspberrypi") {
+					add("iot", 0.70, "vendor:"+sig.CanonicalValue, evidence.TierWeak)
+				}
+				// Common smart-TV and streaming-device chip vendors
+				if containsAny(lowerV, "amlogic", "rockchip", "allwinner") {
+					add("tv", 0.40, "vendor:"+sig.CanonicalValue, evidence.TierWeak)
+				}
 			}
 			if lowerK == "hostname" {
 				if containsAny(lowerV, "printer", "ipp", "lp", "scan", "hplj", "canon", "epson") {
@@ -745,6 +1073,20 @@ func (fusionEngineWeighted) Score(profile evidence.Profile, d store.Device) map[
 				}
 				if containsAny(lowerV, "router", "gateway", "wan", "wifi", "ap-") {
 					add("router", 0.15, "hostname:"+lowerV, evidence.TierWeak)
+				}
+				// Hostname patterns that strongly indicate phone or laptop
+				if containsAny(lowerV, "iphone", "ipad") {
+					add("phone", 0.55, "hostname:"+lowerV, evidence.TierWeak)
+				}
+				if containsAny(lowerV, "macbook", "mac-mini", "mac-pro") {
+					add("laptop", 0.55, "hostname:"+lowerV, evidence.TierWeak)
+				}
+				if containsAny(lowerV, "galaxy", "pixel", "oneplus", "android") {
+					add("phone", 0.45, "hostname:"+lowerV, evidence.TierWeak)
+				}
+				// NAS and home server hostname hints
+				if containsAny(lowerV, "synology", "qnap", "diskstation", "readynas", "nas") {
+					add("iot", 0.55, "hostname:"+lowerV, evidence.TierWeak)
 				}
 			}
 		}
@@ -1077,6 +1419,52 @@ func observationEligibleForLabeling(obs store.Observation) bool {
 	if matchQuality == "ambient_context" || matchQuality == "unmatched" {
 		return false
 	}
+	// For multicast/passive protocol observations, filter out cross-device records where
+	// the record's source IP doesn't match the target device IP. mDNS and SSDP are
+	// multicast-based, so a single browse/listen can capture records from many devices.
+	// Using those cross-device records to classify the queried device is incorrect.
+	// ssdp_active broadcasts a multicast M-SEARCH and collects all SSDP responses on the
+	// LAN; upnp_description_fetch fetches UPnP XML from every discovered SSDP location
+	// URL — both store network-wide responses keyed under each scanned device, so we must
+	// drop any observation whose source IP differs from the target device IP.
+	if obs.Details != nil {
+		switch obs.Strategy {
+		case "mdns_active", "mdns_passive", "ssdp_passive":
+			obsIP := strings.TrimSpace(obs.Details["ip"])
+			if obsIP == "" {
+				obsIP = strings.TrimSpace(obs.Details["entry_ip"])
+			}
+			if obsIP != "" && obs.IP != "" && obsIP != obs.IP {
+				return false
+			}
+			// Also check the location URL — ssdp_passive stores the source location on
+			// ssdp_st/ssdp_server/ssdp_usn obs but not always in entry_ip.
+			if obs.Strategy == "ssdp_passive" {
+				location := strings.TrimSpace(obs.Details["location"])
+				if location != "" && obs.IP != "" {
+					locHost := extractLocationHost(location)
+					if locHost != "" && locHost != obs.IP {
+						return false
+					}
+				}
+			}
+		case "ssdp_active", "upnp_description_fetch":
+			// entry_ip is set on anchor observations (ssdp_status, ssdp_location_host).
+			entryIP := strings.TrimSpace(obs.Details["entry_ip"])
+			if entryIP != "" && obs.IP != "" && entryIP != obs.IP {
+				return false
+			}
+			// location is the URL from which the record was fetched — its host is the
+			// actual source device IP (e.g. "http://192.168.4.1:1900/igd.xml").
+			location := strings.TrimSpace(obs.Details["location"])
+			if location != "" && obs.IP != "" {
+				locHost := extractLocationHost(location)
+				if locHost != "" && locHost != obs.IP {
+					return false
+				}
+			}
+		}
+	}
 	if requiresPassiveAttribution(obs.Strategy, sourceScope) {
 		return matchQuality == "direct_match" || matchQuality == "strong_inferred_match"
 	}
@@ -1089,6 +1477,24 @@ func requiresPassiveAttribution(strategyName, sourceScope string) bool {
 		return true
 	}
 	return strings.Contains(sourceScope, "passive")
+}
+
+// extractLocationHost parses the IP address (without port) from a UPnP/SSDP
+// location URL such as "http://192.168.4.1:1900/igd.xml". Returns "" on failure.
+func extractLocationHost(rawURL string) string {
+	// Strip scheme prefix (http:// or https://)
+	if i := strings.Index(rawURL, "://"); i >= 0 {
+		rawURL = rawURL[i+3:]
+	}
+	// Take only the host[:port] portion before the path
+	if i := strings.Index(rawURL, "/"); i >= 0 {
+		rawURL = rawURL[:i]
+	}
+	// Strip port suffix
+	if i := strings.LastIndex(rawURL, ":"); i >= 0 {
+		rawURL = rawURL[:i]
+	}
+	return strings.TrimSpace(rawURL)
 }
 
 func min(a, b int) int {

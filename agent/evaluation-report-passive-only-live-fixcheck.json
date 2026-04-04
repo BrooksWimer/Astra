@@ -1,0 +1,882 @@
+{
+  "name": "passive-only-live-fixcheck",
+  "source": "corpus",
+  "generated_at": "2026-03-23T23:42:35.4063621Z",
+  "sample_count": 18,
+  "devices": [
+    {
+      "id": "ae:71:8a:0b:80:59",
+      "ip": "192.168.4.21",
+      "mac": "ae:71:8a:0b:80:59",
+      "hostname": "MacBook-Pro-167.local",
+      "device_type": "laptop",
+      "label_state": {
+        "device_category": "laptop",
+        "label_confidence": 0.5571428571428572,
+        "label_confidence_calibrated": 0.5228571428571429,
+        "evidence_summary": [
+          "mDNS: _raop._tcp (AirPlay)",
+          "vendor/hostname: laptop-like",
+          "vendor/hostname: workstation-like"
+        ],
+        "candidate_labels": [
+          {
+            "label": "laptop",
+            "score": 1,
+            "confidence": 0.5571428571428572,
+            "evidence": [
+              "mDNS: _raop._tcp (AirPlay)",
+              "vendor/hostname: laptop-like",
+              "vendor/hostname: workstation-like"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "strong": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: laptop",
+          "level=mid",
+          "laptop: mDNS: _raop._tcp (AirPlay)",
+          "laptop: vendor/hostname: laptop-like",
+          "laptop: vendor/hostname: workstation-like"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 39,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 18,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 18,
+      "source_count": 2,
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429
+    },
+    {
+      "id": "ec:c9:ff:05:fc:44",
+      "ip": "192.168.4.189",
+      "mac": "ec:c9:ff:05:fc:44",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "6e:cc:11:51:a4:e0",
+      "ip": "192.168.4.222",
+      "mac": "6e:cc:11:51:a4:e0",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "2c:9e:00:95:33:bb",
+      "ip": "192.168.4.239",
+      "mac": "2c:9e:00:95:33:bb",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "c8:c6:fe:07:fe:92",
+      "ip": "192.168.4.1",
+      "mac": "c8:c6:fe:07:fe:92",
+      "hostname": "eero",
+      "device_type": "router",
+      "label_state": {
+        "device_category": "router",
+        "label_confidence": 0.5571428571428572,
+        "label_confidence_calibrated": 0.5228571428571429,
+        "evidence_summary": [
+          "SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+          "SSDP: urn:schemas-upnp-org:device:wandevice:1",
+          "SSDP server header: eeroOS/latest UPnP/1.0 eero/latest",
+          "vendor/hostname: mesh-router-like"
+        ],
+        "candidate_labels": [
+          {
+            "label": "router",
+            "score": 1,
+            "confidence": 0.5571428571428572,
+            "evidence": [
+              "SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+              "SSDP: urn:schemas-upnp-org:device:wandevice:1",
+              "SSDP server header: eeroOS/latest UPnP/1.0 eero/latest",
+              "vendor/hostname: mesh-router-like"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "strong": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: router",
+          "level=mid",
+          "router: SSDP: uuid:fcdb9233-a63f-41da-b42c-7cfeb99c8adf::urn:schemas-upnp-org:device:wandevice:1",
+          "router: SSDP: urn:schemas-upnp-org:device:wandevice:1",
+          "router: SSDP server header: eeroOS/latest UPnP/1.0 eero/latest"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 2,
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429
+    },
+    {
+      "id": "2e:89:cb:b3:d2:e3",
+      "ip": "192.168.4.23",
+      "mac": "2e:89:cb:b3:d2:e3",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "2a:fe:31:f6:99:53",
+      "ip": "192.168.4.155",
+      "mac": "2a:fe:31:f6:99:53",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "9c:67:d6:70:2e:2a",
+      "ip": "192.168.4.225",
+      "mac": "9c:67:d6:70:2e:2a",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "00:e0:4c:40:15:c4",
+      "ip": "192.168.4.251",
+      "mac": "00:e0:4c:40:15:c4",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "8c:e7:48:43:e3:1e",
+      "ip": "192.168.4.20",
+      "mac": "8c:e7:48:43:e3:1e",
+      "hostname": "SWANN 192.168.4.20",
+      "device_type": "camera",
+      "label_state": {
+        "device_category": "camera",
+        "label_confidence": 0.5571428571428572,
+        "label_confidence_calibrated": 0.5228571428571429,
+        "evidence_summary": [
+          "SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+          "vendor/hostname: camera-like"
+        ],
+        "candidate_labels": [
+          {
+            "label": "camera",
+            "score": 1,
+            "confidence": 0.5571428571428572,
+            "evidence": [
+              "SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+              "vendor/hostname: camera-like"
+            ],
+            "support_tiers": {
+              "medium": 1,
+              "strong": 1
+            }
+          }
+        ],
+        "reason_chain": [
+          "hybrid top candidate: camera",
+          "level=mid",
+          "camera: SSDP server header: Linux/3.0.8, UPnP/1.0, Portable SDK for UPnP devices/1.4.7",
+          "camera: vendor/hostname: camera-like"
+        ],
+        "confidence_band": "confirm"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 2,
+      "confidence": 0.5571428571428572,
+      "calibrated_confidence": 0.5228571428571429
+    },
+    {
+      "id": "b4:20:46:58:21:2d",
+      "ip": "192.168.4.27",
+      "mac": "b4:20:46:58:21:2d",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "74:e2:0c:14:32:51",
+      "ip": "192.168.4.196",
+      "mac": "74:e2:0c:14:32:51",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "b4:20:46:6e:02:0d",
+      "ip": "192.168.4.210",
+      "mac": "b4:20:46:6e:02:0d",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "98:77:d5:3f:b7:60",
+      "ip": "192.168.4.233",
+      "mac": "98:77:d5:3f:b7:60",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "46:92:be:fb:66:91",
+      "ip": "192.168.4.250",
+      "mac": "46:92:be:fb:66:91",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 29,
+      "observation_status_counts": {
+        "no_response": 9,
+        "real_data": 9,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 9,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "c6:f6:a4:61:51:da",
+      "ip": "192.168.4.254",
+      "mac": "c6:f6:a4:61:51:da",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "68:5e:dd:84:9a:ae",
+      "ip": "192.168.4.255",
+      "mac": "68:5e:dd:84:9a:ae",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 34,
+      "observation_status_counts": {
+        "no_response": 8,
+        "not_applicable": 2,
+        "real_data": 13,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 13,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    },
+    {
+      "id": "ip_192.168.4.253",
+      "ip": "192.168.4.253",
+      "mac": "",
+      "hostname": "Brooks.local",
+      "device_type": "unknown",
+      "label_state": {
+        "device_category": "unknown",
+        "label_confidence": 0,
+        "label_confidence_calibrated": 0,
+        "conflict_flags": [
+          "no_signal",
+          "low_confidence"
+        ],
+        "confidence_band": "unknown"
+      },
+      "observation_count": 29,
+      "observation_status_counts": {
+        "no_response": 9,
+        "real_data": 9,
+        "unsupported": 11
+      },
+      "real_data_observation_count": 9,
+      "source_count": 1,
+      "conflict": true,
+      "unknown": true
+    }
+  ],
+  "label_summary": {
+    "device_count": 18,
+    "labeled_count": 3,
+    "unknown_count": 15,
+    "conflict_count": 15,
+    "observation_status_counts": {
+      "no_response": 146,
+      "not_applicable": 32,
+      "real_data": 231,
+      "unsupported": 198
+    },
+    "band_counts": {
+      "confirm": 3,
+      "unknown": 15
+    },
+    "top_labels": [
+      {
+        "label": "unknown",
+        "count": 15
+      },
+      {
+        "label": "camera",
+        "count": 1
+      },
+      {
+        "label": "laptop",
+        "count": 1
+      },
+      {
+        "label": "router",
+        "count": 1
+      }
+    ],
+    "top_candidate_labels": [
+      {
+        "label": "camera",
+        "count": 1
+      },
+      {
+        "label": "laptop",
+        "count": 1
+      },
+      {
+        "label": "router",
+        "count": 1
+      }
+    ],
+    "average_confidence": 0.09285714285714286,
+    "average_calibrated_confidence": 0.08714285714285715
+  },
+  "evidence_graph": {
+    "built_at": "2026-03-23T23:42:35Z",
+    "device_count": 18,
+    "total_signals": 607,
+    "observed_devices": 18,
+    "devices_with_evidence": 18
+  },
+  "metrics": {
+    "accuracy": 0,
+    "macro": {
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "weighted": {
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    }
+  },
+  "confusion": {
+    "labels": null,
+    "counts": null
+  },
+  "calibration": {
+    "bins": null,
+    "expected_calibration_error": 0
+  },
+  "quality_gate": {
+    "passed": true,
+    "sample_count": 0,
+    "macro_f1": 0,
+    "expected_calibration_error": 0,
+    "reasons": [
+      "quality gate disabled"
+    ]
+  },
+  "splits": [
+    {
+      "name": "segment_1",
+      "description": "blind split by stable device identity",
+      "ids": [
+        "2e:89:cb:b3:d2:e3",
+        "6e:cc:11:51:a4:e0"
+      ],
+      "size": 2
+    },
+    {
+      "name": "segment_2",
+      "description": "blind split by stable device identity",
+      "ids": [
+        "2a:fe:31:f6:99:53",
+        "46:92:be:fb:66:91",
+        "8c:e7:48:43:e3:1e",
+        "98:77:d5:3f:b7:60",
+        "ae:71:8a:0b:80:59",
+        "b4:20:46:58:21:2d",
+        "c6:f6:a4:61:51:da",
+        "ec:c9:ff:05:fc:44",
+        "host:brooks"
+      ],
+      "size": 9
+    },
+    {
+      "name": "segment_3",
+      "description": "blind split by stable device identity",
+      "ids": [
+        "00:e0:4c:40:15:c4",
+        "2c:9e:00:95:33:bb",
+        "68:5e:dd:84:9a:ae",
+        "74:e2:0c:14:32:51",
+        "9c:67:d6:70:2e:2a",
+        "b4:20:46:6e:02:0d",
+        "c8:c6:fe:07:fe:92"
+      ],
+      "size": 7
+    }
+  ],
+  "ablations": [
+    {
+      "scenario": {
+        "name": "drop_mdns",
+        "description": "remove mDNS discovery signals",
+        "disabled_strategies": [
+          "mdns_active",
+          "mdns_passive"
+        ]
+      },
+      "sample_count": 18,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "drop_ssdp_upnp",
+        "description": "remove SSDP and UPnP description signals",
+        "disabled_strategies": [
+          "ssdp_active",
+          "ssdp_passive",
+          "upnp_description_fetch",
+          "upnp_service_control"
+        ]
+      },
+      "sample_count": 18,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "drop_snmp",
+        "description": "remove SNMP identity signals",
+        "disabled_families": [
+          "snmp"
+        ]
+      },
+      "sample_count": 18,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "drop_http_tls",
+        "description": "remove HTTP, TLS, and SSH fingerprinting signals",
+        "disabled_strategies": [
+          "http_header_probe",
+          "passive_http_metadata",
+          "http_favicon_fingerprint",
+          "http_api_probe",
+          "home_api_probe",
+          "credentialed_api",
+          "tls_cert_probe",
+          "passive_tls_handshake",
+          "passive_ssh_banner",
+          "ssh_banner_probe"
+        ]
+      },
+      "sample_count": 18,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    },
+    {
+      "scenario": {
+        "name": "ports_only",
+        "description": "keep only ports-derived evidence",
+        "notes": "useful for measuring how much ports alone can tell us"
+      },
+      "sample_count": 18,
+      "metrics": {
+        "accuracy": 0,
+        "macro": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        },
+        "weighted": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "confusion": {
+        "labels": null,
+        "counts": null
+      },
+      "calibration": {
+        "bins": null,
+        "expected_calibration_error": 0
+      },
+      "notes": [
+        "no manual-label ground truth available for this ablation"
+      ]
+    }
+  ],
+  "notes": [
+    "no manual-label ground truth available for metrics",
+    "corpus_inputs=1"
+  ]
+}

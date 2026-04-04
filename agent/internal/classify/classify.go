@@ -94,7 +94,10 @@ func Classify(
 	}
 
 	// Protocol header hints (supports protocol-specific confidence)
-	if contains(httpServer, "printer", "ipp", "cups", "laser", "canon", "hp", "epson", "brother") {
+	// Router/gateway banners must be checked before the generic "server" printer match
+	if contains(httpServer, "router", "gateway", "xfinity", "netgear", "tp-link", "tplink", "asus", "linksys", "eero", "arris", "broadband router") {
+		add("HTTP server: "+httpServer, 0.65, "router")
+	} else if contains(httpServer, "printer", "ipp", "cups", "laser", "canon", "hp", "epson", "brother") {
 		add("HTTP server: "+httpServer, 0.35, "printer")
 	}
 	if contains(httpServer, "airplay", "chromecast", "plex", "sonos") {
@@ -121,9 +124,9 @@ func Classify(
 		if p == 554 {
 			add("port 554 (RTSP) open", 0.6, "camera")
 		}
-		if p == 7000 {
-			add("port 7000 (AirPlay-style media receiver) open", 0.55, "tv")
-		}
+		// port 7000 intentionally omitted from rules engine:
+		// it is shared between Apple TV and macOS AirPlay receiver and the
+		// fusion engine handles it with full AirTunes probe context.
 		if p == 8008 || p == 8009 {
 			add("port 8009 (cast receiver) open", 0.7, "tv")
 		}
@@ -142,8 +145,28 @@ func Classify(
 	if contains(v, "Apple", "iPhone", "iPad") {
 		add("vendor/hostname: Apple device", 0.5, "phone")
 	}
+	// Override: Apple hostnames that reveal a Mac laptop/desktop
+	if contains(v, "macbook", "mac-mini", "imac", "mac-pro") {
+		add("vendor/hostname: Apple Mac", 0.6, "laptop")
+	}
+	// Apple TV hostname/vendor override
+	if contains(v, "apple-tv", "appletv") {
+		add("vendor/hostname: Apple TV", 0.7, "tv")
+	}
 	if contains(v, "Raspberry", "VMware", "VirtualBox", "QEMU") {
 		add("vendor/hostname: "+vendor, 0.6, "iot")
+	}
+	// Espressif chips power the majority of commercial and DIY IoT devices
+	if contains(v, "Espressif", "espressif") {
+		add("vendor: Espressif IoT chip", 0.65, "iot")
+	}
+	// Amazon devices: Echo, Kindle, Fire TV
+	if contains(v, "Amazon Technologies", "Lab126", "Amazon.com", "echo", "alexa", "kindle", "fire-tv", "firetv") {
+		add("vendor/hostname: Amazon device", 0.65, "iot")
+	}
+	// Intel Corporate OUI is virtually exclusive to laptop/desktop WiFi cards
+	if contains(v, "Intel Corporate") {
+		add("vendor: Intel networking (laptop/desktop)", 0.45, "laptop")
 	}
 	if contains(v, "router", "gateway", "ubnt", "netgear", "tp-link", "UniFi") {
 		add("vendor/hostname: router-like", 0.6, "router")
@@ -168,6 +191,14 @@ func Classify(
 	}
 	if contains(v, "t14", "elitebook", "latitude", "xps", "surface", "macbook-pro", "macbook air", "macbook-pro-") {
 		add("vendor/hostname: workstation-like", 0.6, "laptop")
+	}
+	// NAS / home server hostname hints
+	if contains(v, "synology", "qnap", "diskstation", "readynas") {
+		add("vendor/hostname: NAS device", 0.65, "iot")
+	}
+	// Android phone hostname patterns (Galaxy, Pixel, etc.)
+	if contains(v, "Galaxy", "Pixel", "OnePlus", "Xiaomi", "Redmi", "android") {
+		add("vendor/hostname: Android phone-like", 0.5, "phone")
 	}
 
 	// Normalize confidence to 0..1
@@ -194,14 +225,16 @@ func Classify(
 
 func classifyFromString(s string) string {
 	switch {
-	case contains(s, "router", "gateway", "wan", "bridge", "gateway"):
+	case contains(s, "router", "gateway", "wan", "bridge"):
 		return "router"
-	case contains(s, "camera", "nvr", "ipcam", "hikvision", "axis"):
+	case contains(s, "camera", "nvr", "ipcam", "hikvision", "axis", "dahua", "swann", "reolink", "amcrest", "dvr", "cctv"):
 		return "camera"
-	case contains(s, "printer", "ipp", "pdl", "jetdirect"):
+	case contains(s, "printer", "ipp", "pdl", "jetdirect", "laserjet", "officejet", "pixma", "epson"):
 		return "printer"
-	case contains(s, "airplay", "chromecast", "roku", "plex", "sonos", "dlna", "mediarenderer", "renderingcontrol"):
+	case contains(s, "airplay", "chromecast", "roku", "plex", "sonos", "dlna", "mediarenderer", "renderingcontrol", "samsung smart tv", "lg smart tv", "vizio", "bravia"):
 		return "tv"
+	case contains(s, "eero", "netgear", "tplink", "tp-link", "ubiquiti", "mikrotik", "linksys", "arris"):
+		return "router"
 	default:
 		return "unknown"
 	}
