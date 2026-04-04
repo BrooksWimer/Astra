@@ -22,6 +22,7 @@ import { AstraAssistantPromptCard } from "../features/assistant/AstraAssistantPr
 import { BluetoothScanPanel } from "../features/bluetooth/BluetoothScanPanel";
 import { getDevices, getScanResult, startScan } from "../api/agent";
 import type { RootStackParamList } from "../navigation/RootStack";
+import { featureFlags } from "../config/featureFlags";
 import {
   deviceNeedsReview,
   formatConfidence,
@@ -203,6 +204,8 @@ export function DashboardScreen() {
                   ? "Browse the interface now, then add your scanner URL when you're ready to run a live network scan."
                   : reviewCount > 0
                   ? `${reviewCount} device${reviewCount === 1 ? "" : "s"} need review across your current WiFi environment.`
+                  : featureFlags.localWifiScan
+                  ? "Local iPhone Wi-Fi scan mode is enabled, but the app still falls back to the remote agent until the native path is ready."
                   : "No obvious review items surfaced from the latest scan."}
               </Text>
               <View style={styles.heroStats}>
@@ -220,6 +223,8 @@ export function DashboardScreen() {
                   ? "Add a scanner URL the first time you want to run discovery. Astra only asks for it when scan functionality is needed."
                   : scanning
                   ? "Astra is polling the agent and will refresh devices as soon as the scan finishes."
+                  : featureFlags.localWifiScan
+                  ? "Remote scanning is still active while the local iOS path is scaffolded behind a feature flag."
                   : "Refresh the current environment and bubble review-worthy devices to the top."}
               </Text>
             </View>
