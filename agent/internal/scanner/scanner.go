@@ -70,6 +70,8 @@ func (s *Scanner) Run() {
 		localIP = s.netInfo.LocalIP
 		ifaceName = s.netInfo.InterfaceName
 	}
+	strategy.SetRuntimeConfig(s.cfg)
+	defer strategy.SetRuntimeConfig(nil)
 	strategy.StartPassiveRuntime(s.cfg, localIP, ifaceName)
 	defer strategy.StopPassiveRuntime()
 
@@ -715,7 +717,7 @@ func (s *Scanner) collectStrategyObservations(ctx context.Context) {
 
 	strategies := s.strategies
 	if len(strategies) == 0 {
-		strategies = strategy.AllStrategies()
+		strategies = strategy.DefaultStrategies()
 	}
 	s.strategyRuns = s.strategyRuns[:0]
 	for _, strat := range strategies {
@@ -777,7 +779,7 @@ func (s *Scanner) collectStrategyObservations(ctx context.Context) {
 func (s *Scanner) StrategyNames() []string {
 	strategies := s.strategies
 	if len(strategies) == 0 {
-		strategies = strategy.AllStrategies()
+		strategies = strategy.DefaultStrategies()
 	}
 	names := make([]string, 0, len(strategies))
 	for _, strat := range strategies {

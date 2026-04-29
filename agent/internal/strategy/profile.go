@@ -609,7 +609,7 @@ func StrategyProfiles() []StrategyProfile {
 		{
 			Name:          "full",
 			Description:   "Run the full-capability scanner with all registered discovery, contextual, and specialized probes.",
-			StrategyNames: strategyNamesInOrder(AllStrategies()),
+			StrategyNames: strategyNamesInOrder(DefaultStrategies()),
 		},
 		{
 			Name:          "medium",
@@ -685,6 +685,9 @@ func strategiesForTiers(tiers ...StrategyTier) []string {
 
 	out := make([]string, 0, len(strategyAuditOverrides))
 	for _, strategy := range AllStrategies() {
+		if IsExplicitOnlyStrategy(strategy.Name()) {
+			continue
+		}
 		audit, ok := StrategyAuditForName(strategy.Name())
 		if !ok {
 			continue

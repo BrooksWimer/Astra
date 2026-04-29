@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -14,82 +15,89 @@ const (
 )
 
 type Config struct {
-	EnablePortScan             bool               `json:"enable_port_scan"`
-	PortsToCheck               []int              `json:"ports_to_check"`
-	ScanTimeoutSeconds         int                `json:"scan_timeout_seconds"`
-	ScanMode                   string             `json:"scan_mode"`
-	StrategyProfile            string             `json:"strategy_profile"`
-	MaxProbeIPs                int                `json:"max_probe_ips"`         // 0 = no limit; used when subnet is large
-	LargeSubnetThrottle        bool               `json:"large_subnet_throttle"` // if true, cap probes on /16 or larger
-	StrategyProbeTimeoutMs     int                `json:"strategy_probe_timeout_ms"`
-	StrategyCommandTimeoutMs   int                `json:"strategy_command_timeout_ms"`
-	PassiveCaptureEnabled      bool               `json:"passive_capture_enabled"`
-	PassiveCaptureWindowSeconds int               `json:"passive_capture_window_seconds,omitempty"`
-	PassiveCaptureInterface    string             `json:"passive_capture_interface,omitempty"`
-	PassiveCapturePromiscuous  bool               `json:"passive_capture_promiscuous,omitempty"`
-	PassiveCaptureSnaplen      int                `json:"passive_capture_snaplen,omitempty"`
-	PassiveCaptureBufferPackets int               `json:"passive_capture_buffer_packets,omitempty"`
-	PassiveInfraEnabled        bool               `json:"passive_infra_enabled,omitempty"`
-	PassiveSyslogListenAddr    string             `json:"passive_syslog_listen_addr,omitempty"`
-	PassiveResolverLogPath     string             `json:"passive_resolver_log_path,omitempty"`
-	PassiveDHCPLogPath         string             `json:"passive_dhcp_log_path,omitempty"`
-	PassiveSessionSource       string             `json:"passive_session_source,omitempty"`
-	PassiveSessionCommand      string             `json:"passive_session_command,omitempty"`
-	SNMPCommunities            []string           `json:"snmp_communities,omitempty"`
-	SNMPVersions               []string           `json:"snmp_versions,omitempty"`
-	SNMPV3Username             string             `json:"snmp_v3_username,omitempty"`
-	SNMPV3AuthPassword         string             `json:"snmp_v3_auth_password,omitempty"`
-	SNMPV3PrivPassword         string             `json:"snmp_v3_priv_password,omitempty"`
-	HTTPAPIUsername            string             `json:"http_api_username,omitempty"`
-	HTTPAPIPassword            string             `json:"http_api_password,omitempty"`
-	APIBearerToken             string             `json:"api_bearer_token,omitempty"`
-	SMBUsername                string             `json:"smb_username,omitempty"`
-	SMBPassword                string             `json:"smb_password,omitempty"`
-	SMBDomain                  string             `json:"smb_domain,omitempty"`
-	ControllerEndpoints        []string           `json:"controller_endpoints,omitempty"`
-	AutoActionThreshold        float64            `json:"auto_action_threshold"`
-	AutoLabelThreshold         float64            `json:"auto_label_threshold"`
-	ConfirmThreshold           float64            `json:"confirm_threshold"`
-	UnknownThreshold           float64            `json:"unknown_threshold"`
-	DNSPrivacyMode             string             `json:"dns_privacy_mode"` // full | hashed-domain | category-only
-	LabelingMode               string             `json:"labeling_mode"`    // hybrid | rules-only | fusion-only
-	CalibrationMode            string             `json:"calibration_mode"` // isotonic | sigmoid
-	CategoryThresholdOverrides map[string]float64 `json:"category_threshold_overrides,omitempty"`
-	AutoPolicyEnabled          bool               `json:"auto_policy_enabled"`
-	QualityGateEnabled         bool               `json:"quality_gate_enabled"`
-	QualityGateMinDevices      int                `json:"quality_gate_min_devices"`
-	QualityGateMinMacroF1      float64            `json:"quality_gate_min_macro_f1"`
-	QualityGateMaxECE          float64            `json:"quality_gate_max_ece"`
-	SNMPCredentialedCollection bool               `json:"snmp_credentialed_collection"`
+	EnablePortScan              bool               `json:"enable_port_scan"`
+	PortsToCheck                []int              `json:"ports_to_check"`
+	ScanTimeoutSeconds          int                `json:"scan_timeout_seconds"`
+	ScanMode                    string             `json:"scan_mode"`
+	StrategyProfile             string             `json:"strategy_profile"`
+	MaxProbeIPs                 int                `json:"max_probe_ips"`         // 0 = no limit; used when subnet is large
+	LargeSubnetThrottle         bool               `json:"large_subnet_throttle"` // if true, cap probes on /16 or larger
+	StrategyProbeTimeoutMs      int                `json:"strategy_probe_timeout_ms"`
+	StrategyCommandTimeoutMs    int                `json:"strategy_command_timeout_ms"`
+	PassiveCaptureEnabled       bool               `json:"passive_capture_enabled"`
+	PassiveCaptureWindowSeconds int                `json:"passive_capture_window_seconds,omitempty"`
+	PassiveCaptureInterface     string             `json:"passive_capture_interface,omitempty"`
+	PassiveCapturePromiscuous   bool               `json:"passive_capture_promiscuous,omitempty"`
+	PassiveCaptureSnaplen       int                `json:"passive_capture_snaplen,omitempty"`
+	PassiveCaptureBufferPackets int                `json:"passive_capture_buffer_packets,omitempty"`
+	PassiveInfraEnabled         bool               `json:"passive_infra_enabled,omitempty"`
+	PassiveSyslogListenAddr     string             `json:"passive_syslog_listen_addr,omitempty"`
+	PassiveResolverLogPath      string             `json:"passive_resolver_log_path,omitempty"`
+	PassiveDHCPLogPath          string             `json:"passive_dhcp_log_path,omitempty"`
+	PassiveSessionSource        string             `json:"passive_session_source,omitempty"`
+	PassiveSessionCommand       string             `json:"passive_session_command,omitempty"`
+	SNMPCommunities             []string           `json:"snmp_communities,omitempty"`
+	SNMPVersions                []string           `json:"snmp_versions,omitempty"`
+	SNMPV3Username              string             `json:"snmp_v3_username,omitempty"`
+	SNMPV3AuthPassword          string             `json:"snmp_v3_auth_password,omitempty"`
+	SNMPV3PrivPassword          string             `json:"snmp_v3_priv_password,omitempty"`
+	HTTPAPIUsername             string             `json:"http_api_username,omitempty"`
+	HTTPAPIPassword             string             `json:"http_api_password,omitempty"`
+	APIBearerToken              string             `json:"api_bearer_token,omitempty"`
+	RouterAdminProvider         string             `json:"router_admin_provider,omitempty"`
+	RouterAdminURL              string             `json:"router_admin_url,omitempty"`
+	RouterAdminUsername         string             `json:"router_admin_username,omitempty"`
+	RouterAdminPassword         string             `json:"router_admin_password,omitempty"`
+	RouterAdminTimeoutMs        int                `json:"router_admin_timeout_ms,omitempty"`
+	SMBUsername                 string             `json:"smb_username,omitempty"`
+	SMBPassword                 string             `json:"smb_password,omitempty"`
+	SMBDomain                   string             `json:"smb_domain,omitempty"`
+	ControllerEndpoints         []string           `json:"controller_endpoints,omitempty"`
+	AutoActionThreshold         float64            `json:"auto_action_threshold"`
+	AutoLabelThreshold          float64            `json:"auto_label_threshold"`
+	ConfirmThreshold            float64            `json:"confirm_threshold"`
+	UnknownThreshold            float64            `json:"unknown_threshold"`
+	DNSPrivacyMode              string             `json:"dns_privacy_mode"` // full | hashed-domain | category-only
+	LabelingMode                string             `json:"labeling_mode"`    // hybrid | rules-only | fusion-only
+	CalibrationMode             string             `json:"calibration_mode"` // isotonic | sigmoid
+	CategoryThresholdOverrides  map[string]float64 `json:"category_threshold_overrides,omitempty"`
+	AutoPolicyEnabled           bool               `json:"auto_policy_enabled"`
+	QualityGateEnabled          bool               `json:"quality_gate_enabled"`
+	QualityGateMinDevices       int                `json:"quality_gate_min_devices"`
+	QualityGateMinMacroF1       float64            `json:"quality_gate_min_macro_f1"`
+	QualityGateMaxECE           float64            `json:"quality_gate_max_ece"`
+	SNMPCredentialedCollection  bool               `json:"snmp_credentialed_collection"`
 }
 
 func Default() *Config {
-	return &Config{
-		EnablePortScan:           false,
-		PortsToCheck:             []int{22, 80, 443, 445, 554, 631, 3389, 8009, 1900},
-		ScanTimeoutSeconds:       20,
-		ScanMode:                 ScanModeStandard,
-		StrategyProfile:          "full",
-		MaxProbeIPs:              0,
-		LargeSubnetThrottle:      true,
-		StrategyProbeTimeoutMs:   900,
-		StrategyCommandTimeoutMs: 1800,
-		PassiveCaptureEnabled:    false,
+	cfg := &Config{
+		EnablePortScan:              false,
+		PortsToCheck:                []int{22, 80, 443, 445, 554, 631, 3389, 8009, 1900},
+		ScanTimeoutSeconds:          20,
+		ScanMode:                    ScanModeStandard,
+		StrategyProfile:             "full",
+		MaxProbeIPs:                 0,
+		LargeSubnetThrottle:         true,
+		StrategyProbeTimeoutMs:      900,
+		StrategyCommandTimeoutMs:    1800,
+		PassiveCaptureEnabled:       false,
 		PassiveCaptureWindowSeconds: 120,
-		PassiveCaptureInterface:  "primary",
-		PassiveCapturePromiscuous: false,
-		PassiveCaptureSnaplen:    262144,
+		PassiveCaptureInterface:     "primary",
+		PassiveCapturePromiscuous:   false,
+		PassiveCaptureSnaplen:       262144,
 		PassiveCaptureBufferPackets: 4096,
-		PassiveInfraEnabled:      false,
-		SNMPCommunities:          []string{"public"},
-		SNMPVersions:             []string{"2c"},
-		AutoActionThreshold:      0.95,
-		AutoLabelThreshold:       0.75,
-		ConfirmThreshold:         0.50,
-		UnknownThreshold:         0.50,
-		DNSPrivacyMode:           "full",
-		LabelingMode:             "hybrid",
-		CalibrationMode:          "isotonic",
+		PassiveInfraEnabled:         false,
+		SNMPCommunities:             []string{"public"},
+		SNMPVersions:                []string{"2c"},
+		RouterAdminProvider:         "auto",
+		RouterAdminTimeoutMs:        4000,
+		AutoActionThreshold:         0.95,
+		AutoLabelThreshold:          0.75,
+		ConfirmThreshold:            0.50,
+		UnknownThreshold:            0.50,
+		DNSPrivacyMode:              "full",
+		LabelingMode:                "hybrid",
+		CalibrationMode:             "isotonic",
 		CategoryThresholdOverrides: map[string]float64{
 			"printer": 0.80,
 			"router":  0.80,
@@ -102,6 +110,8 @@ func Default() *Config {
 		QualityGateMaxECE:          0.10,
 		SNMPCredentialedCollection: false,
 	}
+	ApplyEnvOverrides(cfg)
+	return cfg
 }
 
 func Load(path string) (*Config, error) {
@@ -243,6 +253,8 @@ func Load(path string) (*Config, error) {
 	c.SNMPCommunities = normalizeStringList(c.SNMPCommunities)
 	c.SNMPVersions = normalizeStringList(c.SNMPVersions)
 	c.ControllerEndpoints = normalizeStringList(c.ControllerEndpoints)
+	normalizeRouterAdminConfig(&c)
+	ApplyEnvOverrides(&c)
 	c.SNMPV3Username = strings.TrimSpace(c.SNMPV3Username)
 	c.SNMPV3AuthPassword = strings.TrimSpace(c.SNMPV3AuthPassword)
 	c.SNMPV3PrivPassword = strings.TrimSpace(c.SNMPV3PrivPassword)
@@ -253,6 +265,65 @@ func Load(path string) (*Config, error) {
 	c.SMBPassword = strings.TrimSpace(c.SMBPassword)
 	c.SMBDomain = strings.TrimSpace(c.SMBDomain)
 	return &c, nil
+}
+
+func ApplyEnvOverrides(c *Config) {
+	if c == nil {
+		return
+	}
+	if value, ok := lookupTrimmedEnv("NETWISE_ROUTER_ADMIN_PROVIDER"); ok {
+		c.RouterAdminProvider = value
+	}
+	if value, ok := lookupTrimmedEnv("NETWISE_ROUTER_ADMIN_URL"); ok {
+		c.RouterAdminURL = value
+	}
+	if value, ok := lookupTrimmedEnv("NETWISE_ROUTER_ADMIN_USERNAME"); ok {
+		c.RouterAdminUsername = value
+	}
+	if value, ok := os.LookupEnv("NETWISE_ROUTER_ADMIN_PASSWORD"); ok && value != "" {
+		c.RouterAdminPassword = value
+	}
+	if value, ok := lookupTrimmedEnv("NETWISE_ROUTER_ADMIN_TIMEOUT_MS"); ok {
+		if parsed, err := strconv.Atoi(value); err == nil && parsed > 0 {
+			c.RouterAdminTimeoutMs = parsed
+		}
+	}
+	normalizeRouterAdminConfig(c)
+}
+
+func lookupTrimmedEnv(name string) (string, bool) {
+	value, ok := os.LookupEnv(name)
+	if !ok {
+		return "", false
+	}
+	value = strings.TrimSpace(value)
+	if value == "" {
+		return "", false
+	}
+	return value, true
+}
+
+func normalizeRouterAdminConfig(c *Config) {
+	if c == nil {
+		return
+	}
+	c.RouterAdminProvider = normalizeRouterAdminProvider(c.RouterAdminProvider)
+	c.RouterAdminURL = strings.TrimSpace(c.RouterAdminURL)
+	c.RouterAdminUsername = strings.TrimSpace(c.RouterAdminUsername)
+	if c.RouterAdminTimeoutMs <= 0 {
+		c.RouterAdminTimeoutMs = 4000
+	}
+}
+
+func normalizeRouterAdminProvider(provider string) string {
+	switch strings.ToLower(strings.TrimSpace(provider)) {
+	case "", "auto":
+		return "auto"
+	case "xfinity":
+		return "xfinity"
+	default:
+		return "auto"
+	}
 }
 
 func normalizeStringList(values []string) []string {

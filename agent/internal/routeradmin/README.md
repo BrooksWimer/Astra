@@ -1,20 +1,24 @@
-# Router Admin Package Placeholder
+# Router Admin Package
 
-This directory is reserved for future router-admin-ingestion implementation.
+This package contains the authenticated router-admin ingestion scaffold used by
+the explicit `router_admin_inventory` strategy.
 
-## Intended responsibilities
+## Responsibilities
 
-- authenticated router-session helpers
-- page fetch and parse helpers
-- target-specific extraction logic for router-only metadata
-- shared types used by router-admin ingestion code
+- load no secrets directly; callers pass env/config values in memory
+- authenticate to supported router-admin UIs
+- fetch only the connected-device list page in this slice
+- return sanitized inventory observations: status, paths, page metadata/hash,
+  detail-path candidates, device counts, and visible device names
 
-## Integration boundary
+## Xfinity scaffold
 
-- Keep scanner strategy registration in `agent/internal/strategy/` using `router_admin_*.go` files when implementation starts.
-- Keep durable feature notes in `agent/docs/router-admin-ingestion/`.
-- Keep extracted fixtures and captured page artifacts in `agent/artifacts/router-admin-ingestion/`.
+The current Xfinity provider performs this flow:
 
-## Current state
+- `GET /index.jst`
+- `POST /check.jst` with `username`, `password`, and `locale=false`
+- `GET /connected_devices_computers.jst`
 
-Docs only. No scraping logic has been implemented here yet.
+Device-detail navigation and MAC extraction are intentionally out of scope for
+this workstream. Do not persist raw router HTML, cookies, passwords, or
+unsanitized live captures.

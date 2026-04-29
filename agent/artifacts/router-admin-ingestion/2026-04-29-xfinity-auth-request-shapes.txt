@@ -1,0 +1,25 @@
+Sanitized Xfinity router-admin request shapes for authenticated list-page scaffold.
+
+Secrets, cookies, response bodies, raw HTML, and unsanitized page captures are intentionally omitted.
+
+1. Login page probe
+   Method: GET
+   Path: /index.jst
+   Expected safe result: login form detected
+
+2. Login submit
+   Method: POST
+   Path: /check.jst
+   Content-Type: application/x-www-form-urlencoded
+   Form shape:
+     username=<redacted, lowercased before submit>
+     password=<redacted>
+     locale=false
+   Expected safe result: authenticated cookie jar receives session cookies in memory only
+
+3. Connected-device list fetch
+   Method: GET
+   Path: /connected_devices_computers.jst
+   Expected safe result: page_fetched, page title/hash/byte count, visible device names, detail-path candidates
+
+Next artifact should capture only the authenticated device-detail request path/template required for MAC extraction.
