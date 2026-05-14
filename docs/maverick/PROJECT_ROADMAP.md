@@ -20,6 +20,8 @@ Priority order across milestones is value-per-effort for an ordinary home user, 
 
 **Lane.** [`laptop-wifi-scanner`](epics/laptop-wifi-scanner.md).
 
+**Status (2026-05-14).** Server-side advice baseline expanded — `server/src/advice/engine.ts` now has 7 of the 9 canonical `device_type` rules: `router`, `camera`, `iot`, `printer`, `tv`, `speaker`, `unknown`. `phone` and `laptop` are intentional non-rules (they're operator-owned devices, not Astra-managed). New `bump(current, to)` helper makes risk-level escalation monotonic. 23 advice unit tests in `server/src/advice/__tests__/` (PR [#3](https://github.com/BrooksWimer/Astra/pull/3)). Go agent labeling research is the active forward-work surface; the strategy catalog in `agent/docs/WIFI_STRATEGY_CATALOG.md` is the canonical reference.
+
 ---
 
 ## M2 — Mobile app delivers Astra's first impression
@@ -43,6 +45,17 @@ Priority order across milestones is value-per-effort for an ordinary home user, 
 **Success signal.** Operator scans on desktop at home, opens the mobile app at a friend's house with a different network, sees their home labels remembered. Adding a label on mobile reaches the desktop on next refresh.
 
 **Lane.** Cross-cutting — touches `mobile-wifi-scanner` (client-side sync) and a future `server/` slice. Not its own epic; falls under whichever lane the work originates from.
+
+**Status (2026-05-14).** Server-side spine **shipped**. Identity model decision: anonymous handles (UUIDv4 generated once per install). Endpoints in place:
+
+- `POST /scans` — ingest a scan with `{network, devices, scan_started_at}` keyed by the install handle (PR [#6](https://github.com/BrooksWimer/Astra/pull/6))
+- `GET /scans/:id` + `GET /scans/latest?handle=<uuid>` — retrieve; cross-handle access returns 404 (no existence leak)
+- `POST /scans/:id/advice` — per-device advice + a new **network-level insight aggregator** (`cameras-present`, `iot-density`, `smb-rdp-exposure`, `unknown-coverage`, `new-devices`)
+- `PUT /labels` / `GET /labels` / `GET /labels/:deviceId` / `DELETE /labels/:deviceId` — operator-set nicknames + notes, syncable across mobile + desktop via shared handle (PR [#7](https://github.com/BrooksWimer/Astra/pull/7))
+
+Server has its first SQLite (`better-sqlite3`, WAL + FK on) in `src/db/schema.sql`. CI gates merges via `pnpm test` (83 tests) + `pnpm -r run build` + `npx tsc --noEmit` + `go test ./...`.
+
+**Remaining for M3:** mobile + Go-agent integration — each client needs to generate a UUIDv4 at install time and POST scans + read labels. UX decisions (where the handle is displayed for desktop pairing, etc.) are operator calls.
 
 ---
 
