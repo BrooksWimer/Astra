@@ -18,7 +18,11 @@ const deviceSchema = z.object({
   last_seen: z.string(),
   flags: z.array(z.string()),
   confidence: z.number().min(0).max(1),
-  device_type: z.enum(["phone", "laptop", "router", "printer", "tv", "iot", "unknown"]),
+  // Mirror the canonical 9-value enum in shared/schema.json. Previously
+  // missing "speaker" and "camera" meant any /advice request for a
+  // discovered speaker or IP camera got a 400 even though those device
+  // types are valid in the rest of the system.
+  device_type: z.enum(["phone", "laptop", "router", "printer", "tv", "speaker", "camera", "iot", "unknown"]),
 });
 
 const networkSchema = z.object({

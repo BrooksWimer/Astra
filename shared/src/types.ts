@@ -24,7 +24,11 @@ export interface Device {
   ip: string;
   mac: string;
   vendor: string;
-  hostname: string | null;
+  // `hostname` is NOT in the JSON schema's `required[]` list, so the field
+  // may be absent entirely (undefined), present as null when no hostname
+  // was resolved, or present as a real string. Modeling it as `string | null`
+  // alone broke server-side type-check against Zod's `.nullable().optional()`.
+  hostname?: string | null;
   protocols_seen: ProtocolsSeen;
   ports_open?: number[];
   first_seen: string;
