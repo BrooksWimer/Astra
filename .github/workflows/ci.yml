@@ -102,6 +102,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # gopacket's pcap subpackage uses cgo and #include <pcap.h>, so the
+      # runner needs libpcap headers before `go test ./...` can compile
+      # anything that transitively imports pcap.
+      - name: Install libpcap-dev
+        run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+
       - uses: actions/setup-go@v5
         with:
           go-version: "1.21"
