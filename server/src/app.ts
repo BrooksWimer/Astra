@@ -9,6 +9,7 @@ import cors from "cors";
 import express, { type Express } from "express";
 
 import { adviceRouter } from "./routes/advice.js";
+import { labelsRouter } from "./routes/labels.js";
 import { scansRouter } from "./routes/scans.js";
 
 export function createApp(): Express {
@@ -25,6 +26,7 @@ export function createApp(): Express {
 
   app.use("/advice", adviceRouter);
   app.use("/scans", scansRouter);
+  app.use("/labels", labelsRouter);
 
   return app;
 }
