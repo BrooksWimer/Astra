@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - "codex/**"
+      - "claude/**"
+  pull_request:
+
+# Cancel in-progress runs on the same ref when a new push lands.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shared:
+    name: Shared (build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "9.0.0"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build @netwise/shared
+        run: pnpm --filter @netwise/shared build
+
+  server:
+    name: Server (build + tests)
+    runs-on: ubuntu-latest
+    needs: shared
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "9.0.0"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Shared has to be built first because server consumes the .d.ts
+      # via workspace:*. The shared job already verified the build, but
+      # the runner is a separate machine — rebuild here too.
+      - name: Build @netwise/shared
+        run: pnpm --filter @netwise/shared build
+
+      - name: Build server
+        run: pnpm --filter server build
+
+      - name: Server tests
+        run: pnpm --filter server test
+
+  mobile:
+    name: Mobile (typecheck)
+    runs-on: ubuntu-latest
+    needs: shared
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "9.0.0"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build @netwise/shared
+        run: pnpm --filter @netwise/shared build
+
+      # Mobile has no lint/test scripts of its own yet, but tsc --noEmit
+      # catches type drift between the Expo app and @netwise/shared types
+      # before merge. The `tsc` binary is at mobile's node_modules/.bin
+      # after `pnpm install` even without a `typecheck` script.
+      - name: Typecheck
+        working-directory: mobile
+        run: npx tsc --noEmit
+
+  agent:
+    name: Agent (go test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # gopacket's pcap subpackage uses cgo and #include <pcap.h>, so the
+      # runner needs libpcap headers before `go test ./...` can compile
+      # anything that transitively imports pcap.
+      - name: Install libpcap-dev
+        run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache-dependency-path: agent/go.sum
+
+      - name: go test ./...
+        working-directory: agent
+        run: go test ./...
