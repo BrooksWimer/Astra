@@ -88,16 +88,73 @@ test("benign laptop with no open ports, no flags → low risk, generic summary",
   assert.match(out.summary, /No specific risks identified/);
 });
 
-test("speaker / camera device_types are valid input (regression for the 7-vs-9 enum drift)", () => {
-  // engine doesn't have specific advice for speaker/camera, but it must
-  // not throw or treat them as 'unknown'. The schema-level test guarantees
-  // they pass validation; this guarantees the engine doesn't tag them as
-  // unknown by accident.
+test("speaker / camera device_types are not misclassified as unknown (enum-drift regression)", () => {
+  // schema-level test guarantees these device_types pass validation;
+  // this guarantees the engine doesn't surface the "Verify unknown
+  // device" action for them — that action is reserved for device_type
+  // === "unknown".
   for (const dt of ["speaker", "camera"] as const) {
     const out = getAdvice(baseRequest({ device_type: dt }));
-    assert.equal(out.risk_level, "low");
-    assert.ok(!out.actions.some((a) => a.title === "Verify unknown device"));
+    assert.ok(
+      !out.actions.some((a) => a.title === "Verify unknown device"),
+      `device_type "${dt}" should not surface the "Verify unknown device" action`,
+    );
+    assert.ok(
+      !out.uncertainty_notes.some((n) => n.includes("could not be inferred")),
+      `device_type "${dt}" should not emit an "unknown device_type" uncertainty note`,
+    );
   }
+});
+
+test("camera device → high risk + 'Lock down camera defaults' + 'Segment cameras'", () => {
+  const out = getAdvice(baseRequest({ device_type: "camera" }));
+  assert.equal(out.risk_level, "high");
+  assert.ok(out.actions.some((a) => a.title === "Lock down camera defaults"));
+  assert.ok(out.actions.some((a) => a.title === "Segment cameras off the main network"));
+  const lockDown = out.actions.find((a) => a.title === "Lock down camera defaults");
+  assert.equal(lockDown?.urgency, "now");
+  assert.ok(out.reasons.some((r) => r.toLowerCase().includes("camera")));
+});
+
+test("iot device → medium risk + 'Keep IoT devices isolated'", () => {
+  const out = getAdvice(baseRequest({ device_type: "iot" }));
+  assert.equal(out.risk_level, "medium");
+  assert.ok(out.actions.some((a) => a.title === "Keep IoT devices isolated"));
+  assert.ok(out.reasons.some((r) => r.toLowerCase().includes("iot")));
+});
+
+test("printer device → low risk + 'Keep printer firmware current' (nice_to_have)", () => {
+  const out = getAdvice(baseRequest({ device_type: "printer" }));
+  assert.equal(out.risk_level, "low");
+  const printerAction = out.actions.find((a) => a.title === "Keep printer firmware current");
+  assert.ok(printerAction);
+  assert.equal(printerAction.urgency, "nice_to_have");
+});
+
+test("tv device → low risk + 'Review smart-TV privacy + updates' (nice_to_have)", () => {
+  const out = getAdvice(baseRequest({ device_type: "tv" }));
+  assert.equal(out.risk_level, "low");
+  const tvAction = out.actions.find((a) => a.title === "Review smart-TV privacy + updates");
+  assert.ok(tvAction);
+  assert.equal(tvAction.urgency, "nice_to_have");
+});
+
+test("speaker device → low risk + 'Review voice-assistant privacy' (nice_to_have)", () => {
+  const out = getAdvice(baseRequest({ device_type: "speaker" }));
+  assert.equal(out.risk_level, "low");
+  const speakerAction = out.actions.find((a) => a.title === "Review voice-assistant privacy");
+  assert.ok(speakerAction);
+  assert.equal(speakerAction.urgency, "nice_to_have");
+});
+
+test("risk-level escalation never reduces (camera + port 445 on home stays at high)", () => {
+  // Regression for the bump() helper: a high-risk rule (camera) followed
+  // by a medium-bump rule (port 445 on a non-home context) must not
+  // drop the level back to medium.
+  const out = getAdvice(
+    baseRequest({ device_type: "camera", ports_open: [445], user_context: "airbnb" }),
+  );
+  assert.equal(out.risk_level, "high");
 });
 
 test("hostname undefined (omitted entirely) is accepted by the engine", () => {
